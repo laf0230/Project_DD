@@ -1,3 +1,4 @@
+using Interection;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -15,7 +16,7 @@ public class OpenDoor : MonoBehaviour, IInterectable
         animator.StopPlayback();
     }
 
-    public void Interect(PlayerController player)
+    public void Interect()
     {
         Open();
         Debug.Log("Open");
