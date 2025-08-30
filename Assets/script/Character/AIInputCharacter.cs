@@ -55,5 +55,6 @@ public class AIInputCharacter : Character, IInterectable
     public void Interect()
     {
         agent.isStopped = true;
+        Debug.Log("대화를 시작합니다.");
     }
 }
