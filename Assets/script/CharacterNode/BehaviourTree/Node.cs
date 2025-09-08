@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Node
+namespace BehaviourTrees
 {
-    public class Node : ScriptableObject
+    public class Node
     {
         public enum State { Sucess, Failure, Running }
         public List<Node> children = new();
@@ -22,19 +22,19 @@ namespace Node
 
         public void AddChild(Node node) => children.Add(node);
         public virtual State Process() => children[currentChild].Process();
-        public virtual void ResetNode()
+        public virtual void Reset()
         {
             currentChild = 0;
             foreach (Node child in children)
             {
-                child.ResetNode();
+                child.Reset();
             }
         }
     }
 
     public class BehaviourTree : Node
     {
-        public BehaviourTree(string name, int priority = 0) : base(name, priority)
+        public BehaviourTree(string name) : base(name)
         {
         }
 
@@ -42,7 +42,8 @@ namespace Node
         {
             while(currentChild < children.Count)
             {
-                var state = children[children.Count - 1].Process();
+                var state = children[currentChild].Process();
+
                 if(state != State.Sucess)
                 {
                     return state;
@@ -53,7 +54,34 @@ namespace Node
         }
     }
 
-    public class Sequence : Node
+    public class Selector : Node // OR failure일 시 다음 자식 실행 자식이 하나라도 Success이면 Success하고 종료
+    {
+        public Selector(string name, int priority = 0) : base(name, priority)
+        {
+        }
+
+        public override State Process()
+        {
+            // 하나를 선택해서 실행함
+            if(currentChild < children.Count)
+            {
+                switch(children[currentChild].Process())
+                {
+                    case State.Sucess:
+                        return State.Sucess;
+                    case State.Running:
+                        return State.Running;
+                    default:
+                        currentChild++;
+                        return State.Running;
+                }
+            }
+            Reset();
+            return State.Sucess;
+        }
+    }
+
+    public class Sequence : Node // AND 하나라도 failure이면 모두 failure 모든 자식이 Success이면 Success
     {
         public Sequence(string name, int priority = 0) : base(name, priority)
         {
@@ -66,6 +94,7 @@ namespace Node
                 switch (children[currentChild].Process())
                 {
                     case State.Failure:
+                        Reset();
                         return State.Failure;
                     case State.Running:
                         return State.Running;
@@ -77,8 +106,20 @@ namespace Node
                         return currentChild == children.Count ? State.Sucess : State.Running;
                 }
             }
-            ResetNode();
+            Reset();
             return State.Running;
         }
+    }
+
+    public class Leaf : Node
+    {
+        [SerializeField]
+        readonly IStrategy strategy;
+
+        public Leaf(string name, int priority) : base(name, priority) { }
+
+        public override State Process() => strategy.Process();
+
+        public override void Reset() => strategy.ResetStrategy();
     }
 }

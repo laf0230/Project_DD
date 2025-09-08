@@ -2,12 +2,11 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Node
+namespace BehaviourTrees
 {
-    [CreateAssetMenu(menuName = "Node/ActionNode")]
-    public class ActionStrategy : ScriptableObject, IStrategy
+    public class ActionStrategy : IStrategy
     {
-        [SerializeField] Action action;
+        Action action;
 
         public ActionStrategy(Action action)
         {

@@ -1,6 +1,6 @@
 using System;
 
-namespace Node
+namespace BehaviourTrees
 {
     public interface IStrategy
     {

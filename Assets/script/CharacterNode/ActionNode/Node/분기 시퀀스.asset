@@ -9,7 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28860309c2064084784cbe2cc367a9ab, type: 3}
-  m_Name: "\uC774\uB3D9 \uB178\uB4DC"
+  m_Script: {fileID: 11500000, guid: 80ce82b2008436c418668adb7171f89d, type: 3}
+  m_Name: "\uBD84\uAE30 \uC2DC\uD000\uC2A4"
   m_EditorClassIdentifier: 
-  waypointSO: {fileID: 11400000, guid: c0b163bcad178db4ab3b28b10710016e, type: 2}
+  children:
+  - {fileID: 11400000, guid: 1913774d8b93fd9478a85bb6bd2bafc0, type: 2}
+  - {fileID: 11400000, guid: b74dca75b77e27740bc40c162686db54, type: 2}

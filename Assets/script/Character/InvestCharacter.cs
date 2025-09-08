@@ -1,5 +1,3 @@
-using Interection;
-
 namespace CharacterStateMachine
 {
     public class InvestCharacter : State<Character>
