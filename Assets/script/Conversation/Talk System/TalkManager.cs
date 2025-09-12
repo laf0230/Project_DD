@@ -62,7 +62,7 @@ public class TalkManager : MonoBehaviour
     public void ActiveDialogue(string dialogueID)
     {
         starterInputs = GameObject.FindAnyObjectByType<StarterAssetsInputs>();
-        starterInputs.SetPointerMovable(false);
+        starterInputs?.SetPointerMovable(false);
         currentIndex = 0;
         isSelectionActivated = false;
         isDialogue = true;

@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Assets.script.Talk_System
 {
     [System.Serializable]
-    public class TalkNode: TriggerableObject
+    public class TalkNode
     {
         public string ID;
         public List<TalkLine> talkLineList;
