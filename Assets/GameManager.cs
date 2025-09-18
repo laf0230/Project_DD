@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using WaypointSystem;
@@ -15,6 +16,7 @@ public class GameManager : MonoBehaviour
         {
             instance = this;
         }
+        //Debug.Log(AssetDatabase.path);
     }
 
     public void SetMouseEnable(bool enabled)

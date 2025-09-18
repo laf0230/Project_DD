@@ -1,0 +1,15 @@
+{
+  "Clues": [
+    {
+      "id": "clue_001", // 단서 ID
+      "imagePath": "Images/Clues/clue_image", // 단서 경로
+      "name": "Mysterious Note", // 단서 이름
+      "tags": [ "mystery", "note", "evidence" ], // 단서 태그
+      "description": [ // 단서 설명
+        "A torn piece of paper found in the study room.",
+        "It seems to contain a secret message."
+      ],
+      "linkedClueId": [ "clue_002", "clue_005" ] // 연관된 단서 ID
+    }
+  ]
+}

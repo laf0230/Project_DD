@@ -9,12 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: beb6aa905247e874ab396b88b4d4db04, type: 3}
-  m_Name: EventTableSO
+  m_Script: {fileID: 11500000, guid: 05affa6567f77eb4e8cde06a43a73784, type: 3}
+  m_Name: New Combined Clue Data Stroage
   m_EditorClassIdentifier: 
-  eventList:
-  - name: A
-    conditionList: []
-    onEventTriggered:
-      m_PersistentCalls:
-        m_Calls: []
+  data: {fileID: 0}
+  recipes:
+  - id: poop
+    clueIds:
+    - Sample
+    - Sample1
+    - Sample2
+    - Sample3

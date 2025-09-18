@@ -1,0 +1,85 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 025d5ac97181e0045bc26518ade3fe39, type: 3}
+  m_Name: New Clue Data
+  m_EditorClassIdentifier: 
+  data: {fileID: 4900000, guid: 026937c7cb0a01445854fd37a122656d, type: 3}
+  clues:
+  - id: Sample
+    imagePath: 
+    name: Brick
+    tags:
+    - Tool
+    description:
+    - Hi
+    - Hello
+    - I'll kill you
+    linkedClueId:
+    - 
+    - 
+    - 
+  - id: Sample1
+    imagePath: 
+    name: Home
+    tags:
+    - Place
+    description:
+    - This
+    - is
+    - My Home
+    linkedClueId:
+    - 
+    - 
+    - 
+  - id: Sample2
+    imagePath: 
+    name: Dog House
+    tags:
+    - Place
+    - Tool
+    description:
+    - This
+    - is
+    - My Home
+    linkedClueId:
+    - 
+    - 
+    - 
+  - id: Sample3
+    imagePath: 
+    name: Smart House Robot
+    tags:
+    - Place
+    - Tool
+    - Person
+    description:
+    - This
+    - is
+    - My Home
+    linkedClueId:
+    - 
+    - 
+    - 
+  - id: Sample4
+    imagePath: 
+    name: Just Robot
+    tags:
+    - Tool
+    - Person
+    description:
+    - This
+    - is
+    - My Home
+    linkedClueId:
+    - 
+    - 
+    - 

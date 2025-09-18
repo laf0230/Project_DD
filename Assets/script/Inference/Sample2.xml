@@ -1,0 +1,20 @@
+<Clues>
+  <clue>
+    <id>clue_001</id>
+    <imagePath>Images/clues/clue_image</imagePath>
+    <name>Mysterious Note</name>
+    <tags>
+      <tag>mystery</tag>
+      <tag>note</tag>
+      <tag>evidence</tag>
+    </tags>
+    <descriptions>
+      <desc>A torn piece of paper found in the study room.</desc>
+      <desc>It seems to contain a secret message.</desc>
+    </descriptions>
+    <linkedClues>
+      <linked>clue_002</linked>
+      <linked>clue_005</linked>
+    </linkedClues>
+  </clue>
+</Clues>
