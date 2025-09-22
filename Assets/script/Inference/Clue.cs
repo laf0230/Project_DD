@@ -5,16 +5,21 @@ using UnityEngine;
 namespace Inference
 {
     [Serializable]
-    public class Clue
+    public class Clue: IClue
     {
-        public string id;
+        [SerializeField] private string id;
         public string imagePath;
-        public string name;
-        public string[] tags;
-        public string[] description;
+        [SerializeField] private string name;
+        [SerializeField] private string[] tags;
+        [SerializeField] private string[] description;
         public int[] descriptionIndex => new int[description.Length];
-        public int descriptionLength => description.Length;
         public string[] linkedClueId;
+
+        public string Id { get => id; set => id = value; }
+        public string Name { get => name; set => name = value; }
+        public string[] Tags { get => tags; set => tags = value; }
+        public string[] Description { get => description; set => description = value; }
+        public int DescriptionLength { get => description.Length; }
 
         Clue(string id, string name, string[] tags, string[] linkedClueId, int descriptionLength)
         {

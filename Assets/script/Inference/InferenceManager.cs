@@ -7,11 +7,11 @@ namespace Inference
     public class InferenceManager : MonoBehaviour
     {
         public ClueDataStroage clueData;
-        public Dictionary<string, Clue> ownedClueContainer = new();
+        public Dictionary<string, IClue> ownClueContainer = new();
         public Dictionary<string, Clue> selectedClueList;
 
         public CombinedClueDataStroage combinedClueData;
-        public List<ClueRecipe> createdClueList;
+        public List<ClueRecipe> ownCombinedClueList;
 
         // 단서 해금 기능 목록
         // Complate 단서 설명 레벨에 따라서 단서 텍스트 해금
@@ -29,49 +29,64 @@ namespace Inference
 
         private void Awake()
         {
-            foreach (var clue in clueData.clues)
+            foreach (var clue in clueData.clueCollection)
             {
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < clue.Value.DescriptionLength; i++)
                 {
-                    AddClue(clue.id);
+                    AddClue(clue.Key);
                 }
             }
         }
 
         public void AddClue(string id, int descriptionLevel = 0)
         {
-            var clue = clueData.GetClue(id);
+            var unIdentifiedClue = clueData.GetClue(id);
 
-            if (!ownedClueContainer.ContainsKey(id))
+            if (!ownClueContainer.ContainsKey(id))
             {
                 // Add Empty Clue(except description)
-                var newClue = Clue.Instantiate(clue.id, clue.name, clue.tags, clue.linkedClueId, clue.descriptionLength);
-                ownedClueContainer[id] = newClue;
-                Debug.Log("InferenceManager: " + ownedClueContainer[id].name);
+                if (unIdentifiedClue is Clue clue)
+                {
+                    var newClue = Clue.Instantiate(clue.Id, clue.Name, clue.Tags, clue.linkedClueId, clue.DescriptionLength);
+                    ownClueContainer[id] = newClue;
+                }
+                else if (unIdentifiedClue is ClueRecipe recipe)
+                {
+                    var newClue = ClueRecipe.CreateRecipe(recipe.Id, recipe.Name, recipe.Tags, recipe.clueIds, recipe.DescriptionLength);
+                    ownClueContainer[id] = newClue;
+                }
+
+                Debug.Log("InferenceManager: " + ownClueContainer[id].Name + " Clue Added");
             }
 
             // Add Description
-            ownedClueContainer[id].description[descriptionLevel] = clue.description[descriptionLevel];
-            Debug.Log("InferenceManager: " + ownedClueContainer[id].description[descriptionLevel] + " Description Added");
+            ownClueContainer[id].Description[descriptionLevel] = unIdentifiedClue.Description[descriptionLevel];
+            Debug.Log("InferenceManager: " + ownClueContainer[id].Description[descriptionLevel] + " Description Added");
+
         }
 
-        public Clue GetClue(string id) => ownedClueContainer[id];
+        public IClue GetClue(string id) => ownClueContainer[id];
 
         // 카테고리 UI 버튼을 눌렀을 때 해당하는 목록만 활성화하는 방식을 사용
         // 특정 태그로 요청하면 해당 태그에 맞는 데이터 반환
-        public List<Clue> GetClassifiedClueDataByTag(string tag)
+        public List<IClue> GetClassifiedClueDataByTag(string tag)
         {
-            var result = new List<Clue>();
-            foreach (var clue in ownedClueContainer.Values)
+            var result = new List<IClue>();
+            foreach (var clue in ownClueContainer.Values)
             {
-                for (global::System.Int32 i = 0; i < clue.tags.Length; i++)
+                Debug.Log("GetClue: " + clue);
+                Debug.Log($"GetClue: TagCount: {clue.Tags.Length} Tags: {string.Join(", ", clue.Tags)}");
+                for (global::System.Int32 i = 0; i < clue.Tags.Length; i++)
                 {
-                    if (clue.tags[i] == tag)
+                    if (clue.Tags[i] == tag)
+                    {
                         result.Add(clue);
+                        Debug.Log($"InferenceManager: Searched ID: {tag}, ID: {clue.Name} Tag: {clue.Tags[i]} added");
+                    }
                 }
             }
 
-            if(result.Count <= 0)
+            if (result.Count <= 0)
             {
                 Debug.LogWarning($"ClueClassification: Check the Tag: {tag}, this tag is not yet exsist");
             }
@@ -82,16 +97,16 @@ namespace Inference
         public List<string> GetClassifiedClueIDByTag(string tag)
         {
             var result = new List<string>();
-            foreach (var clue in ownedClueContainer.Values)
+            foreach (var clue in ownClueContainer.Values)
             {
-                for (global::System.Int32 i = 0; i < clue.tags.Length; i++)
+                for (global::System.Int32 i = 0; i < clue.Tags.Length; i++)
                 {
-                    if (clue.tags[i] == tag)
-                        result.Add(clue.id);
+                    if (clue.Tags[i] == tag)
+                        result.Add(clue.Id);
                 }
             }
 
-            if(result.Count <= 0)
+            if (result.Count <= 0)
             {
                 Debug.LogWarning($"ClueClassification: Check the Tag: {tag}, this tag is not yet exsist");
             }
@@ -99,14 +114,20 @@ namespace Inference
             return result;
         }
 
-        public void AddCombinedClue(List<string> ids)
+        public void AddCombinedClue(string name, List<string> ids)
         {
-            createdClueList.Add(ClueRecipe.Combine(ids));
+            ownCombinedClueList.Add(ClueRecipe.CreateRecipe(UniqueIDGenerator.GenerateUniqueId(name), name, new string[] { "Sentense" }, ids, 0));
+        }
+
+        [ContextMenu("보유한 단서 출력")]
+        private void PrintOwnClues()
+        {
+            Debug.Log(string.Join(", ", ownClueContainer.Keys));
         }
 
         public ClueRecipe GetCombinedClue(List<string> ids)
         {
-            foreach (var recipe in createdClueList)
+            foreach (var recipe in ownCombinedClueList)
             {
                 if (recipe.clueIds.Count != ids.Count)
                     continue;
@@ -127,11 +148,6 @@ namespace Inference
 
             Debug.LogErrorFormat($"InferenceManager: Couldn't found Recipe. Ids = {0}", string.Join(", ", ids));
             return null;
-        }
-
-        public void ModifyCombinedClue(int index, List<string> ids, string id)
-        {
-            // Todo Modify CombinedClue ata
         }
 
         /*

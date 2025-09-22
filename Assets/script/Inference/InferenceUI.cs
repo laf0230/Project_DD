@@ -31,17 +31,17 @@ public class InferenceUI : MonoBehaviour
         // Create and Init
         foreach(var clue in clues)
         {
-            if (!clueUis.ContainsKey(clue.id))
+            if (!clueUis.ContainsKey(clue.Id))
             {
                 var clueUIObject = Instantiate(clueUiPrefab, clueUiContainer);
-                clueUis[clue.id] = clueUIObject;
+                clueUis[clue.Id] = clueUIObject;
             }
 
-            var clueUI = clueUis[clue.id];
+            var clueUI = clueUis[clue.Id];
             clueUI.isActive = true;
             clueUI.Clue = clue;
 
-            activeIds.Add(clue.id);
+            activeIds.Add(clue.Id);
         }
 
         // Disable: has to disabled uis
@@ -60,17 +60,17 @@ public class InferenceUI : MonoBehaviour
         // Create and Init
         foreach(var clue in clues)
         {
-            if (!clueUis.ContainsKey(clue.id))
+            if (!clueUis.ContainsKey(clue.Id))
             {
                 var clueUIObject = Instantiate(clueUiPrefab, inferenceNoteClueUiContainer);
-                clueUis[clue.id] = clueUIObject;
+                clueUis[clue.Id] = clueUIObject;
             }
 
-            var clueUI = clueUis[clue.id];
+            var clueUI = clueUis[clue.Id];
             clueUI.isActive = true;
             clueUI.Clue = clue;
 
-            activeIds.Add(clue.id);
+            activeIds.Add(clue.Id);
         }
 
         // Disable: has to disabled uis

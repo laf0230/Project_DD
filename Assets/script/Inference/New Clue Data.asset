@@ -83,3 +83,12 @@ MonoBehaviour:
     - 
     - 
     - 
+  recipieData: {fileID: 0}
+  recipes:
+  - id: Recipe1
+    name: REC
+    description:
+    - F
+    tags:
+    - Sentense
+    clueIds: []
