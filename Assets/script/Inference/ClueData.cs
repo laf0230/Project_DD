@@ -16,7 +16,7 @@ namespace Inference
 
         public Dictionary<string, IClue> clueCollection = new();
 
-        private void OnEnable()
+        private void Awake()
         {
             LoadData();
         }

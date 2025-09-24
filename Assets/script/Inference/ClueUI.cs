@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class ClueUI : MonoBehaviour
 {
-    [SerializeField] InferenceManager manager;
-
     [SerializeField] private Image image;
     [SerializeField] private TextMeshProUGUI clueName;
     [SerializeField] private Transform descriptionContainer;
@@ -16,6 +15,8 @@ public class ClueUI : MonoBehaviour
     [SerializeField] private List<ClueDescriptionUI> descriptionUis;
 
     [SerializeField] private IClue clue;
+    public UnityEvent<ClueUI> onSelected;
+
     public IClue Clue { get => clue; set => SetData(value); }
     public bool isActive { get => gameObject.activeSelf; set => gameObject.SetActive(value); }
 
@@ -37,7 +38,7 @@ public class ClueUI : MonoBehaviour
             }
             descriptionUis[i].isActive = true;
 
-            descriptionUis[i].SetText(clue.Description[i]);
+            descriptionUis[i].SetText(clue.Description[i].description);
         }
 
         for(int i = clue.DescriptionLength; i < descriptionUis.Count; i++)
@@ -45,4 +46,6 @@ public class ClueUI : MonoBehaviour
             descriptionUis[i].isActive = false;
         }
     }
+
+    public void OnSelected() => onSelected?.Invoke(this);
 }

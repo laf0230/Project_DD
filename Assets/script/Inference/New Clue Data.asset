@@ -20,9 +20,12 @@ MonoBehaviour:
     tags:
     - Tool
     description:
-    - Hi
-    - Hello
-    - I'll kill you
+    - description: H
+      index: 0
+    - description: I
+      index: 1
+    - description: B
+      index: 2
     linkedClueId:
     - 
     - 
@@ -33,9 +36,12 @@ MonoBehaviour:
     tags:
     - Place
     description:
-    - This
-    - is
-    - My Home
+    - description: This
+      index: 0
+    - description: Place
+      index: 1
+    - description: Home
+      index: 2
     linkedClueId:
     - 
     - 
@@ -47,9 +53,12 @@ MonoBehaviour:
     - Place
     - Tool
     description:
-    - This
-    - is
-    - My Home
+    - description: This place
+      index: 0
+    - description: is
+      index: 1
+    - description: dog house
+      index: 2
     linkedClueId:
     - 
     - 
@@ -62,9 +71,12 @@ MonoBehaviour:
     - Tool
     - Person
     description:
-    - This
-    - is
-    - My Home
+    - description: Hi
+      index: 0
+    - description: Im
+      index: 1
+    - description: House Robot
+      index: 2
     linkedClueId:
     - 
     - 
@@ -76,9 +88,12 @@ MonoBehaviour:
     - Tool
     - Person
     description:
-    - This
-    - is
-    - My Home
+    - description: Hello.
+      index: 0
+    - description: Its
+      index: 1
+    - description: Just Robot
+      index: 2
     linkedClueId:
     - 
     - 
@@ -88,7 +103,12 @@ MonoBehaviour:
   - id: Recipe1
     name: REC
     description:
-    - F
+    - description: 
+      index: 0
     tags:
-    - Sentense
-    clueIds: []
+    - Sentence
+    clueIds:
+    - 
+    - 
+    - 
+    - 

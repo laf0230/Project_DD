@@ -10,9 +10,6 @@ namespace Inference
         public Dictionary<string, IClue> ownClueContainer = new();
         public Dictionary<string, Clue> selectedClueList;
 
-        public CombinedClueDataStroage combinedClueData;
-        public List<ClueRecipe> ownCombinedClueList;
-
         // 단서 해금 기능 목록
         // Complate 단서 설명 레벨에 따라서 단서 텍스트 해금
         // Complate 단서 자체 해금
@@ -29,11 +26,12 @@ namespace Inference
 
         private void Awake()
         {
+            clueData.LoadData();
             foreach (var clue in clueData.clueCollection)
             {
                 for (int i = 0; i < clue.Value.DescriptionLength; i++)
                 {
-                    AddClue(clue.Key);
+                    AddClue(clue.Key, i);
                 }
             }
         }
@@ -116,38 +114,13 @@ namespace Inference
 
         public void AddCombinedClue(string name, List<string> ids)
         {
-            ownCombinedClueList.Add(ClueRecipe.CreateRecipe(UniqueIDGenerator.GenerateUniqueId(name), name, new string[] { "Sentense" }, ids, 0));
+            ownClueContainer.Add(name, ClueRecipe.CreateRecipe(UniqueIDGenerator.GenerateUniqueId(name), name, new string[] { "Sentence" }, ids, 0));
         }
 
         [ContextMenu("보유한 단서 출력")]
         private void PrintOwnClues()
         {
             Debug.Log(string.Join(", ", ownClueContainer.Keys));
-        }
-
-        public ClueRecipe GetCombinedClue(List<string> ids)
-        {
-            foreach (var recipe in ownCombinedClueList)
-            {
-                if (recipe.clueIds.Count != ids.Count)
-                    continue;
-
-                bool allMatch = true;
-                for (int i = 0; i < ids.Count; i++)
-                {
-                    if (recipe.clueIds[i] != ids[i])
-                    {
-                        allMatch = false;
-                        break;
-                    }
-                }
-
-                if (allMatch)
-                    return recipe;
-            }
-
-            Debug.LogErrorFormat($"InferenceManager: Couldn't found Recipe. Ids = {0}", string.Join(", ", ids));
-            return null;
         }
 
         /*
