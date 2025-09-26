@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 025d5ac97181e0045bc26518ade3fe39, type: 3}
   m_Name: New Clue Data
   m_EditorClassIdentifier: 
+  savePath: Assets/Data/Clue
+  fileName: ClueData_1
   data: {fileID: 4900000, guid: 026937c7cb0a01445854fd37a122656d, type: 3}
   clues:
   - id: Sample
@@ -53,11 +55,11 @@ MonoBehaviour:
     - Place
     - Tool
     description:
-    - description: This place
+    - description: Nothing
       index: 0
-    - description: is
+    - description: Nothing
       index: 1
-    - description: dog house
+    - description: Nothing
       index: 2
     linkedClueId:
     - 
@@ -87,9 +89,10 @@ MonoBehaviour:
     tags:
     - Tool
     - Person
+    - Person
     description:
     - description: Hello.
-      index: 0
+      index: 26
     - description: Its
       index: 1
     - description: Just Robot
@@ -98,7 +101,6 @@ MonoBehaviour:
     - 
     - 
     - 
-  recipieData: {fileID: 0}
   recipes:
   - id: Recipe1
     name: REC
@@ -112,3 +114,4 @@ MonoBehaviour:
     - 
     - 
     - 
+  isForBuild: 0
