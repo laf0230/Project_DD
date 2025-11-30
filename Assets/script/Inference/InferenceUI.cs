@@ -27,10 +27,12 @@ public class InferenceUI : MonoBehaviour
     private Button selectedButton;
     private string selectedTag;
     private int currentOrder;
+    private string lastOpendUIName;
 
     private void Start()
     {
-        //UpdateUI("all");
+        lastOpendUIName = uis[0].name;
+        OpenUI(lastOpendUIName);
     }
 
     public void OpenUI(string uiName)
@@ -38,7 +40,10 @@ public class InferenceUI : MonoBehaviour
         for(int i=0; i < uis.Count; i++)
         {
             if (uis[i].name == uiName)
+            {
                 uis[i].ui.gameObject.SetActive(true);
+                lastOpendUIName = uiName;
+            }
             else
                 uis[i].ui.gameObject.SetActive(false);
         }

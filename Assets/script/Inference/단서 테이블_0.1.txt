@@ -1,0 +1,6 @@
+ID,단서 이미지,이름,태그,설명
+ID,resourceID,name,tag,description
+A,Camera.png,카메라,Object/Tool,"클레디가 들고 다닌다.
+클레디의 소중한 물건같다.
+/사진을 찍을 수 있다.
+/내부가 비어 있다."

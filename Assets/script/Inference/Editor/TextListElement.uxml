@@ -1,4 +1,0 @@
-<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/script/Inference/Editor/ClueEditor.uss?fileID=7433441132597879392&amp;guid=30ee1182520729d4395bdf19c2f663c2&amp;type=3#ClueEditor" />
-    <ui:TextField label="File Name" placeholder-text="filler text" data-source="project://database/Assets/script/Inference/New%20Clue%20Data.asset?fileID=11400000&amp;guid=6de92f6b255797146ae05b485b126b36&amp;type=2#New Clue Data" data-source-path="fileName" />
-</ui:UXML>

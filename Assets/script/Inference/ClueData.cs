@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -12,11 +13,11 @@ namespace Inference
     [CreateAssetMenu(menuName = "ClueData")]
     public class ClueDataStroage : ScriptableObject
     {
-        public string savePath = "Data/Clue";
-        public string fileName;
-
         public TextAsset data;
+        [Header("시작 줄")]
+        public int START_LINE;
         public Clue[] clues;
+        public Clue[] sample;
 
         public ClueRecipe[] recipes;
 
@@ -25,53 +26,98 @@ namespace Inference
 
         public Dictionary<string, IClue> clueCollection = new();
 
-        private void Awake()
-        {
-            LoadData();
-        }
-
-        [ContextMenu("데이터 새로고침")]
-        public void LoadData()
-        {
-            foreach (var clue in clues)
-            {
-                clueCollection.Add(clue.Id, clue);
-                Debug.Log($"ClueData: {clue.Id} Included");
-            }
-
-            foreach (var recipe in recipes)
-            {
-                clueCollection.Add(recipe.Id, recipe);
-                Debug.Log($"ClueData: {recipe.Id} Included\n Name: {recipe.Name}\n Tags: {string.Join(",", recipe.Tags)}\n Description: {recipe.Description}");
-            }
-        }
-
-        [ContextMenu("Json으로부터 데이터 변환")]
+        [ContextMenu("파일에서 데이터 불러오기")]
         public void Convert()
         {
-            string root = !isForBuild
-                ? Application.persistentDataPath
-                : Application.dataPath;
+            // -----------------------------
+            // 1. 줄 이어붙이기 (description 안에 \n이 들어간 경우)
+            // -----------------------------
+            List<string> mergedLines = new List<string>();
+            bool insideQuotes = false;
+            string currentLine = "";
 
-            string directory = Path.Combine(root, savePath);
-            string path = Path.Combine(directory, fileName + ".json");
+            byte[] bytes = data.bytes;
 
-                if (!File.Exists(path))
-                {
-                    Debug.Log("해당 파일은 존재하지 않습니다.");
-                    return;
-                }
-            var json = File.ReadAllText(path);
-            var clueData = JsonUtility.FromJson<DTClues>(json);
+            var text = Encoding.UTF8.GetString(
+                Encoding.Convert(Encoding.GetEncoding("euc-kr"), Encoding.UTF8, bytes)
+                );
 
-            if(EditorUtility.DisplayDialog("Warining", "현재 등록된 데이터가 지워지고\n새로운 데이터가 등록됩니다.\n정말 하시겠습니까?", "예", "아니오"))
+            foreach (var rawLine in text.Split('\n'))
             {
-                clues = clueData.clues;
-                recipes = clueData.recipes;
-                LoadData();
+                var line = rawLine.TrimEnd('\r');
+
+                // description 시작 전
+                if (!insideQuotes)
+                    currentLine = line;
+                else
+                    currentLine += "\n" + line; // description 이어붙이기
+
+                int quoteCount = line.Count(c => c == '"');
+                if (quoteCount % 2 != 0) insideQuotes = !insideQuotes;
+
+                // description이 닫힌 시점에서 최종적으로 한 줄로 합쳐짐
+                if (!insideQuotes)
+                {
+                    mergedLines.Add(currentLine);
+                    currentLine = "";
+                }
             }
 
-            Debug.Log($"Saved ClueData Path: {path}");
+            // -----------------------------
+            // 2. 병합된 라인 기준으로 파싱 시작
+            // -----------------------------
+            List<Clue> clues = new List<Clue>();
+            int lineIndex = 0;
+
+            foreach (var rawline in mergedLines)
+            {
+                lineIndex++;
+                if (lineIndex <= START_LINE) continue;
+
+                if (string.IsNullOrWhiteSpace(rawline)) continue;
+
+                Clue clue = new Clue();
+                var line = rawline.Split(',');
+
+                for (int i = 0; i < line.Length; i++)
+                {
+                    string field = line[i].Trim().Trim('"');
+
+                    switch (i)
+                    {
+                        case 0:
+                            clue.Id = field;
+                            break;
+                        case 1:
+                            clue.imagePath = field;
+                            break;
+                        case 2:
+                            clue.Name = field;
+                            break;
+                        case 3:
+                            clue.Tags = field.Split('/');
+                            break;
+                        case 4:
+                            // description 필드에서 \n 제거 후 / 로 split
+                            string[] descs = field.Split(new char[] { '/' }, System.StringSplitOptions.RemoveEmptyEntries);
+
+                            ClueDescription[] clueDescs = new ClueDescription[descs.Length];
+                            for (int j = 0; j < descs.Length; j++)
+                            {
+                                string desc = descs[j].Trim();
+                                clueDescs[j] = new ClueDescription(desc, j);
+                            }
+                            clue.Description = clueDescs;
+                            break;
+                    }
+                }
+
+                clues.Add(clue);
+            }
+
+            sample = clues.ToArray();
+
+            Debug.Log($"{sample.Length}개의 단서 데이터를 불러왔습니다.");
         }
 
         public IClue GetClue(string id)
@@ -90,40 +136,7 @@ namespace Inference
         [ContextMenu("Json으로 변환")]
         public void ToJsonFile()
         {
-            string root = !isForBuild
-                ? Application.persistentDataPath
-                : Application.dataPath;
 
-            string directory = Path.Combine(root, savePath);
-
-            Directory.CreateDirectory(directory);
-
-            DTClues dtClue = new DTClues(clues, recipes);
-            string content = JsonUtility.ToJson(dtClue, true);
-
-            string path = Path.Combine(directory, fileName + ".json");
-
-            if (File.Exists(path))
-            {
-                Debug.LogError($"Clue Data: Already Exist Same name file {{{fileName}}}");
-                return;
-            }
-            File.WriteAllText(path, content);
-
-            Debug.Log($"Saved ClueData Path: {path}");
-        }
-    }
-
-        [System.Serializable]
-    public class DTClues
-    {
-        public Clue[] clues;
-        public ClueRecipe[] recipes;
-
-        public DTClues(Clue[] clues, ClueRecipe[] recipes)
-        {
-            this.clues = clues;
-            this.recipes = recipes;
         }
     }
 }

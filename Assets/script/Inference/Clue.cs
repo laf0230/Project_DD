@@ -21,6 +21,8 @@ namespace Inference
         public ClueDescription[] Description { get => description; set => description = value; }
         public int DescriptionLength { get => description.Length; }
 
+        public Clue() { }
+
         Clue(string id, string name, string[] tags, string[] linkedClueId, int descriptionLength)
         {
             this.id = id;

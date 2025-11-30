@@ -8,15 +8,15 @@ namespace CharacterStateMachine
 {
     public class Character : MonoBehaviour
     {
-        StateMachine<Character> StateMachine = new();
+        StateMachine StateMachine = new();
 
         public InvestCharacter investCharacter;
-        public BattleCharacter battleCharacter;
+        public BattleState battleCharacter;
 
         protected virtual void Awake()
         {
-            investCharacter = new(this);
-            battleCharacter = new(this);
+            //investCharacter = new(this);
+            //battleCharacter = new(this);
 
             StateMachine.ChangeState(investCharacter);
         }

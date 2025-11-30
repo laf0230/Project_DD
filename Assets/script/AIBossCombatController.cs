@@ -159,4 +159,9 @@ public class AIBossCombatController : MonoBehaviour, IMovable
     {
         this.isMovable = isMovable;
     }
+
+    public bool GetIsMovable()
+    {
+        return isMovable;
+    }
 }

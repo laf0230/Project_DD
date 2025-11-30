@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 025d5ac97181e0045bc26518ade3fe39, type: 3}
   m_Name: New Clue Data
   m_EditorClassIdentifier: 
-  savePath: Assets/Data/Clue
-  fileName: ClueData_1
-  data: {fileID: 4900000, guid: 026937c7cb0a01445854fd37a122656d, type: 3}
+  data: {fileID: 4900000, guid: 0b66875ccc56c0b49b6b3d01268cdf09, type: 3}
+  START_LINE: 2
   clues:
   - id: Sample
     imagePath: 
@@ -101,6 +100,22 @@ MonoBehaviour:
     - 
     - 
     - 
+  sample:
+  - id: A
+    imagePath: Camera.png
+    name: "\uCE74\uBA54\uB77C"
+    tags:
+    - Object
+    - Tool
+    description:
+    - description: "\uD074\uB808\uB514\uAC00 \uB4E4\uACE0 \uB2E4\uB2CC\uB2E4.\n\uD074\uB808\uB514\uC758
+        \uC18C\uC911\uD55C \uBB3C\uAC74\uAC19\uB2E4."
+      index: 0
+    - description: "\uC0AC\uC9C4\uC744 \uCC0D\uC744 \uC218 \uC788\uB2E4."
+      index: 1
+    - description: "\uB0B4\uBD80\uAC00 \uBE44\uC5B4 \uC788\uB2E4."
+      index: 2
+    linkedClueId: []
   recipes:
   - id: Recipe1
     name: REC

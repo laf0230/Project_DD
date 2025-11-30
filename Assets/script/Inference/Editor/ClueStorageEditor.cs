@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using Inference;
 
-[CustomEditor(typeof(ClueDataStroage))]
+/*
 public class ClueDataStroageEditor : Editor
 {
     private SerializedProperty savePathProp;
@@ -49,3 +49,4 @@ public class ClueDataStroageEditor : Editor
     }
 }
 
+*/

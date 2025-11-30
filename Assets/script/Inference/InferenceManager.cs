@@ -26,7 +26,6 @@ namespace Inference
 
         private void Awake()
         {
-            clueData.LoadData();
             foreach (var clue in clueData.clueCollection)
             {
                 for (int i = 0; i < clue.Value.DescriptionLength; i++)

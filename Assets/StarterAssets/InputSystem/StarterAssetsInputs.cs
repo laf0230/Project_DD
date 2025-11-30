@@ -41,7 +41,7 @@ namespace StarterAssets
 
 		public void OnSprint(InputAction.CallbackContext value)
 		{
-			SprintInput(value.performed);
+			sprint = !sprint;
 		}
 
 

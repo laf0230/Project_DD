@@ -1,4 +1,5 @@
-﻿ using UnityEngine;
+﻿using DD.Combat;
+using UnityEngine;
 #if ENABLE_INPUT_SYSTEM 
 using UnityEngine.InputSystem;
 #endif
@@ -10,7 +11,7 @@ namespace StarterAssets
 {
 #if ENABLE_INPUT_SYSTEM 
 #endif
-    public class ThirdPersonController : MonoBehaviour
+    public class ThirdPersonController : MonoBehaviour, IMovable
     {
         [Header("Player")]
         [Tooltip("Move speed of the character in m/s")]
@@ -74,7 +75,7 @@ namespace StarterAssets
         public bool LockCameraPosition = false;
 
         [Space(3f)]
-        public bool isMovable = true;
+        private bool isMovable = true;
 
         // cinemachine
         private float _cinemachineTargetYaw;
@@ -214,7 +215,7 @@ namespace StarterAssets
 
         private void Move()
         {
-            if(_hasAnimator && !isMovable)
+            if(_hasAnimator || !isMovable)
             {
                 _animator.SetFloat(_animIDSpeed, 0);
                 _animator.SetFloat(_animIDMotionSpeed, 0);
@@ -398,6 +399,21 @@ namespace StarterAssets
             {
                 AudioSource.PlayClipAtPoint(LandingAudioClip, transform.TransformPoint(_controller.center), FootstepAudioVolume);
             }
+        }
+
+        public void Move(Vector3 direction)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void SetIsMovable(bool isMovable)
+        {
+            this.isMovable = isMovable;
+        }
+
+        public bool GetIsMovable()
+        {
+            return this.isMovable;
         }
     }
 }

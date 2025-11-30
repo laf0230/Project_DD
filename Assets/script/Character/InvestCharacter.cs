@@ -1,36 +1,33 @@
+using UnityEngine;
+
 namespace CharacterStateMachine
 {
-    public class InvestCharacter : State<Character>
+    public class InvestCharacter: State
     {
-        public StateMachine<InvestCharacter> currentState = new();
+        public StateMachine currentState = new();
         public InvestCharacterMoveState moveState;
         public InvestCharacterTalkState talkState;
 
-        public override void Enter()
+        public InvestCharacter(StateMachine stateMachine, Animator animator) : base(stateMachine, animator)
         {
-            base.Enter();
         }
 
         public void Interection(IInterectable interactable)
         {
             interactable.Interect();
         }
+    }
 
-        public InvestCharacter(Character character) : base(character)
+    public class InvestCharacterTalkState : State
+    {
+        public InvestCharacterTalkState(StateMachine stateMachine, Animator animator) : base(stateMachine, animator)
         {
         }
     }
 
-    public class InvestCharacterTalkState : State<InvestCharacter>
+    public class InvestCharacterMoveState : State
     {
-        public InvestCharacterTalkState(InvestCharacter character) : base(character)
-        {
-        }
-    }
-
-    public class InvestCharacterMoveState : State<InvestCharacter>
-    {
-        public InvestCharacterMoveState(InvestCharacter character) : base(character)
+        public InvestCharacterMoveState(StateMachine stateMachine, Animator animator) : base(stateMachine, animator)
         {
         }
     }

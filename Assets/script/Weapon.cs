@@ -12,7 +12,7 @@ public class Weapon: MonoBehaviour, IColliderUse
     public async void Use(Combat user)
     {
         gameObject.SetActive(true);
-        user.controller.SetIsMovable(false);
+        //user.controller.SetIsMovable(false);
         user.isAttackable = false;
 
         Ray ray = new Ray(transform.position, Vector3.up);
@@ -31,7 +31,7 @@ public class Weapon: MonoBehaviour, IColliderUse
         await Task.Delay(msDuration);
 
         user.isAttackable = true;
-        user.controller.SetIsMovable(true);
+        //user.controller.SetIsMovable(true);
         gameObject.SetActive(false);
     }
 
