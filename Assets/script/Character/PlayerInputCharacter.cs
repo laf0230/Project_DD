@@ -1,4 +1,4 @@
-using CharacterStateMachine;
+Ôªøusing CharacterStateMachine;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
@@ -25,9 +25,9 @@ public class PlayerInputCharacter : Character
     {
         base.Update();
 
-        if (direction.magnitude > 0.01f)
+        if (direction.magnitude >= 0.01f)
         {
-            // ƒ´∏ﬁ∂Û ±‚¡ÿ ¿Ãµø πÊ«‚ ∫Ø»Ø
+            // Ïπ¥Î©îÎùº Í∏∞Ï§Ä Ïù¥Îèô Î∞©Ìñ• Î≥ÄÌôò
             Vector3 camForward = cameraTransform.forward;
             Vector3 camRight = cameraTransform.right;
             camForward.y = 0;
@@ -35,14 +35,24 @@ public class PlayerInputCharacter : Character
             camForward.Normalize();
             camRight.Normalize();
 
-            Vector3 moveDir = camForward * direction.z + camRight * direction.x;
+            Vector3 lookDir = camForward * direction.z + camRight * direction.x;
+            Vector3 moveDir = lookDir + Vector3.up * direction.y;
 
             controller.Move(moveDir * speed * Time.deltaTime);
 
-            // ƒ≥∏Ø≈Õ »∏¿¸ (¿Ãµø πÊ«‚ πŸ∂Û∫∏±‚)
-            Quaternion targetRotation = Quaternion.LookRotation(moveDir);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 10f);
+            // Ï∫êÎ¶≠ÌÑ∞ ÌöåÏ†Ñ (Ïù¥Îèô Î∞©Ìñ• Î∞îÎùºÎ≥¥Í∏∞)
+            if (lookDir != Vector3.zero)
+            {
+                LookDirection(lookDir);
+            }
         }
+    }
+
+    private void LookDirection(Vector3 lookDir)
+    {
+        Quaternion targetRotation = Quaternion.LookRotation(lookDir);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 10f);
+
     }
 
     public override void SetDirection(Vector3 dir)

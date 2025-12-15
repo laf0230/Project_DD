@@ -129,7 +129,6 @@ MonoBehaviour:
   button: {fileID: 6112260970584569997}
   image: {fileID: 9041515380268879268}
   clueName: {fileID: 2009705704512682137}
-  descriptionContainer: {fileID: 0}
 --- !u!114 &2009705704512682137 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1904593998667256967, guid: 7776bfb0ac5b64549aa060663db5edd6, type: 3}

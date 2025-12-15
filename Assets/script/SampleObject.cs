@@ -13,9 +13,4 @@ public class SampleObject : MonoBehaviour
     {
         var eventList = so.GetEventList();
     }
-
-    public void Interect(Player player)
-    {
-        
-    }
 }

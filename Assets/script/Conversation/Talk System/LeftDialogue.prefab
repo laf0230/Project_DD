@@ -92,6 +92,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nameText: {fileID: 4632585926469655509}
   descriptionText: {fileID: 883954647276411126}
+  onPointerUp:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &2226913041872314235
 GameObject:
   m_ObjectHideFlags: 0

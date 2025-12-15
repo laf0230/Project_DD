@@ -335,16 +335,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fccab83cbe1542488d2b9880e0017cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  input: {fileID: 3917976153977501654}
-  thirdPersonController: {fileID: 6193978140537330541}
-  triggerTable: {fileID: 11400000, guid: a51bb794a3674ca45bcdd8e869511afd, type: 2}
-  eventListener:
-    eventList: []
-  eventHandler:
-    handleDataList: []
-  shotCount: 0
-  trigger: ShootCount
+  direction: {x: 0, y: 0, z: 0}
   playerState: 0
+  isMovable: 1
 --- !u!114 &1332733007365755105
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1097,7 +1090,6 @@ MonoBehaviour:
   BottomClamp: -30
   CameraAngleOverride: 0
   LockCameraPosition: 0
-  isMovable: 1
 --- !u!114 &4191200674539402558
 MonoBehaviour:
   m_ObjectHideFlags: 0

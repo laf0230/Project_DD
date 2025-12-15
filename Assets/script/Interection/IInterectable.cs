@@ -1,7 +1,13 @@
 using UnityEngine;
 
+public enum InterectionType
+{
+    Conversation,
+    Nothing
+}
+
 // 인터렉션 개발
 public interface IInterectable
 {
-    void Interect(); // 대화. 
+    InterectionType Interect(); 
 }

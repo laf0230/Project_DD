@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
-public class AIInputCharacter : Character, IInterectable
+public class AIInputCharacter : Character
 {
     NavMeshAgent agent;
 

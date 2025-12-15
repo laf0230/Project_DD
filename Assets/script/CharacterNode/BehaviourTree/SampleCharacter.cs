@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class SampleCharacter : MonoBehaviour
 {
+    /*
     BehaviourTree BehaviourTree;
 
     private void Awake()
@@ -10,16 +11,19 @@ public class SampleCharacter : MonoBehaviour
         BehaviourTree = new("BehaviourTree");
         BehaviourTree.AddChild(new Sequence("Sequence"));
     }
+    */
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    public float moveSpeed = 0.5f;
+    public float moveTime = 5f;
+    float currentTime = 0;
 
-    // Update is called once per frame
-    void Update()
+    public void MoveToUp()
     {
-        
+        while (currentTime < moveSpeed)
+        {
+            transform.position += Vector3.up * moveSpeed * Time.deltaTime;
+            currentTime += Time.deltaTime;
+        }
+        currentTime = 0;
     }
 }

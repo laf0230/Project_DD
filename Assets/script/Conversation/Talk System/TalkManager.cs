@@ -1,4 +1,5 @@
-using Assets.script.Talk_System;
+ï»¿using Assets.script.Talk_System;
+using NUnit.Framework.Constraints;
 using StarterAssets;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,28 +8,49 @@ using UnityEngine.UI;
 
 public class TalkManager : MonoBehaviour
 {
+    [Header("ëŒ€í™” ë°ì´í„°/ìºë¦­í„° ë°ì´í„°")]
     [SerializeField] private TalkCollectionSO talkData;
     [SerializeField] private CharacterInfoSO characterSpriteListData;
 
+    [Header("UI ë°ì´í„°")]
     [SerializeField] private Transform dialogueContainer;
     [SerializeField] private DialogueUI dialogueUIPrefab;
     [SerializeField] private DialogueUI dialogueUI;
 
+    [Header("ì„ íƒì§€ ë°ì´í„°")]
     [SerializeField] private Transform dialogueSelectionContainer;
     [SerializeField] private TalkSelectionUI selectionUIPrefab;
     [SerializeField] private TalkSelectionUI[] selectionUIs = new TalkSelectionUI[5];
     private int activatedSelectionCount = 0;
 
+    [Tooltip("ìºë¦­í„°ì˜ ì´ë¯¸ì§€ê°€ ë³´ì—¬ì§€ëŠ” ë¶€ë¶„ì— ëŒ€í•œ ë°ì´í„°")]
+    [Header("ìºë¦­í„° ì´ë¯¸ì§€ ë³´ê´€ ë°ì´í„°")]
     [SerializeField] private Transform characterImageContainer;
     [SerializeField] private TalkCharacterUI characterImageUIPrefab;
     [SerializeField] private TalkCharacterUI[] characterImageList;
 
     private TalkNode currentNode;
     private TalkLine currentLine;
-    private StarterAssetsInputs starterInputs;
+    private PlayerController playerController;
     private int currentIndex = 0;
     private bool isSelectionActivated = false;
     private bool isDialogue = false;
+
+    private static TalkManager instance;
+
+    public static TalkManager Instance
+    {
+        get
+        {
+            return instance;
+        }
+    }
+
+    private void Awake()
+    {
+        instance = this;
+        Debug.Log(instance);
+    }
 
     private void Start()
     {
@@ -61,8 +83,8 @@ public class TalkManager : MonoBehaviour
 
     public void ActiveDialogue(string dialogueID)
     {
-        starterInputs = GameObject.FindAnyObjectByType<StarterAssetsInputs>();
-        starterInputs?.SetPointerMovable(false);
+        playerController = FindAnyObjectByType<PlayerController>();
+        playerController.UpdateState(PlayerState.Conversation);
         currentIndex = 0;
         isSelectionActivated = false;
         isDialogue = true;
@@ -134,27 +156,27 @@ public class TalkManager : MonoBehaviour
         var selectionCount = currentNode.talkSelectionList.Count;
         if(activatedSelectionCount > selectionCount)
         {
-            // ¿ä±¸µÇ´Â ¼±ÅÃÁö°¡ È°¼ºÈ­µÈ ¼±ÅÃÁöº¸´Ù ¸¹À» °æ¿ì Ãß°¡ È°¼ºÈ­
+            // ìš”êµ¬ë˜ëŠ” ì„ íƒì§€ê°€ í™œì„±í™”ëœ ì„ íƒì§€ë³´ë‹¤ ë§ì„ ê²½ìš° ì¶”ê°€ í™œì„±í™”
             for(int i = selectionCount; i < activatedSelectionCount; i++)
             {
                 selectionUIs[i].gameObject.SetActive(false);
             }
         } else if(activatedSelectionCount < selectionCount)
         {
-            // È°¼ºÈ­µÈ ¼±ÅÃÁö°¡ ¿ä±¸µÇ´Â ¼±ÅÃÁöº¸´Ù ¸¹À» °æ¿ì ºñÈ°¼ºÈ­
+            // í™œì„±í™”ëœ ì„ íƒì§€ê°€ ìš”êµ¬ë˜ëŠ” ì„ íƒì§€ë³´ë‹¤ ë§ì„ ê²½ìš° ë¹„í™œì„±í™”
             for(int i = activatedSelectionCount; i < selectionCount; i++)
             {
                 selectionUIs[i].gameObject.SetActive(true);
             }
         }
 
-        // ¼±ÅÃÁö µ¥ÀÌÅÍ ¾÷µ¥ÀÌÆ®
+        // ì„ íƒì§€ ë°ì´í„° ì—…ë°ì´íŠ¸
         for (int i = 0; i < selectionCount; i++)
         {
             selectionUIs[i].SelectionText = currentNode.talkSelectionList[i].selectionText;
         };
 
-        // È°¼ºÈ­µÈ ¼±ÅÃÁö ¼ö °»½Å
+        // í™œì„±í™”ëœ ì„ íƒì§€ ìˆ˜ ê°±ì‹ 
         activatedSelectionCount = selectionCount;
     }
 
@@ -169,7 +191,7 @@ public class TalkManager : MonoBehaviour
 
     public void NextDialogue()
     {
-        // ¼±ÅÃÁö°¡ ÀÌ¹Ì È°¼ºÈ­µÇ¾î ÀÖÀ» °æ¿ì ¿¹¿ÜÃ³¸®
+        // ì„ íƒì§€ê°€ ì´ë¯¸ í™œì„±í™”ë˜ì–´ ìˆì„ ê²½ìš° ì˜ˆì™¸ì²˜ë¦¬
         currentIndex++;
 
         if (isSelectionActivated)
@@ -177,15 +199,15 @@ public class TalkManager : MonoBehaviour
 
         if(currentNode.talkLineList.Count-1 < currentIndex)
         {
-            // ´ÙÀ½ ´ëÈ­°¡ ¾øÀ» °æ¿ì ¼±ÅÃÁö Ãâ·Â
+            // ë‹¤ìŒ ëŒ€í™”ê°€ ì—†ì„ ê²½ìš° ì„ íƒì§€ ì¶œë ¥
             if(currentNode.talkSelectionList.Count-1 > 0)
             {
-                // ¼±ÅÃÁö Ãâ·Â
+                // ì„ íƒì§€ ì¶œë ¥
                 VisibleSelection();
             }
             else
             {
-                // ¼±ÅÃÁö°¡ ¾øÀ» °æ¿ì
+                // ì„ íƒì§€ê°€ ì—†ì„ ê²½ìš°
                 EndDialogue();
             }
         }
@@ -193,10 +215,10 @@ public class TalkManager : MonoBehaviour
         {
             VisualizeCharacter();
 
-            // ´ÙÀ½ ´ë»ç Ãâ·Â
+            // ë‹¤ìŒ ëŒ€ì‚¬ ì¶œë ¥
             currentLine = currentNode.talkLineList[currentIndex];
 
-            // Todo - Á¶°Ç¿¡ ¸Â°Ô TalkLineÀ» Ãß°¡/Á¦°Å¸¦ ÇØ¾ßÇÔ
+            // Todo - ì¡°ê±´ì— ë§ê²Œ TalkLineì„ ì¶”ê°€/ì œê±°ë¥¼ í•´ì•¼í•¨
 
             dialogueUI.Name = currentLine.speakerData.name;
             dialogueUI.Description = currentLine.talkText;
@@ -205,10 +227,10 @@ public class TalkManager : MonoBehaviour
 
     public void EndDialogue()
     {
-        starterInputs.SetPointerMovable(false);
+        playerController.UpdateState(PlayerState.Investigation);
         dialogueContainer.gameObject.SetActive(false);
         isDialogue = false;
 
-        // Todo ´ë»ç Á¾·á ÈÄ Æ®¸®°Å ¾÷µ¥ÀÌÆ®
+        // Todo ëŒ€ì‚¬ ì¢…ë£Œ í›„ íŠ¸ë¦¬ê±° ì—…ë°ì´íŠ¸
     }
 }

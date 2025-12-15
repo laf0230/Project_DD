@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
-public class OpenDoor : MonoBehaviour, IInterectable
+public class OpenDoor : MonoBehaviour
 {
     public Transform leftDoor;
     public Transform rightDoor;

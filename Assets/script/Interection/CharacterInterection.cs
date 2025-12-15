@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class CharacterInterection : MonoBehaviour, IInterectable
+public class CharacterInterection : MonoBehaviour
 {
     public UnityEvent OnInterected;
 
