@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-[AddComponentMenu("상호작용/문")]
+[AddComponentMenu("상호작용 오브젝트/문")]
 public class SimpleDoor : MonoBehaviour
 {
     [Serializable]

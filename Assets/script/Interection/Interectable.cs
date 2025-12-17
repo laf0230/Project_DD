@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 
-[AddComponentMenu("인터랙션/인터랙션 반응 이벤트")]
+[AddComponentMenu("상호작용 이벤트/인터랙션 반응 이벤트")]
 public class Interectable : MonoBehaviour, IInterectable
 {
     [Header("도움이 필요하면 이름에 마우스를 올려보세요")]

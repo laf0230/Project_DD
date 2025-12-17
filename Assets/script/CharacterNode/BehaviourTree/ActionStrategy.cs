@@ -1,12 +1,13 @@
-using System;
+﻿using System;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace BehaviourTrees
 {
-    public class ActionStrategy : IStrategy
+    [CreateAssetMenu(menuName = "ActionStategy")]
+    public class ActionStrategy : ScriptableObject, IStrategy
     {
-        Action action;
+        public Action action;
 
         public ActionStrategy(Action action)
         {

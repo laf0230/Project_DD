@@ -1,10 +1,10 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace BehaviourTrees
 {
-    public class Node
+    public class Node: ScriptableObject
     {
         public enum State { Sucess, Failure, Running }
         public List<Node> children = new();
@@ -13,7 +13,6 @@ namespace BehaviourTrees
         protected int currentChild;
         readonly int priority;
         
-
         public Node(string name, int priority = 0)
         {
             nodeName = name;
@@ -32,29 +31,7 @@ namespace BehaviourTrees
         }
     }
 
-    public class BehaviourTree : Node
-    {
-        public BehaviourTree(string name) : base(name)
-        {
-        }
-
-        public override State Process()
-        {
-            while(currentChild < children.Count)
-            {
-                var state = children[currentChild].Process();
-
-                if(state != State.Sucess)
-                {
-                    return state;
-                }
-                currentChild++;
-            }
-            return State.Sucess;
-        }
-    }
-
-    public class Selector : Node // OR failureÀÏ ½Ã ´ÙÀ½ ÀÚ½Ä ½ÇÇà ÀÚ½ÄÀÌ ÇÏ³ª¶óµµ SuccessÀÌ¸é SuccessÇÏ°í Á¾·á
+    public class Selector : Node // OR failureì¼ ì‹œ ë‹¤ìŒ ìžì‹ ì‹¤í–‰ ìžì‹ì´ í•˜ë‚˜ë¼ë„ Successì´ë©´ Successí•˜ê³  ì¢…ë£Œ
     {
         public Selector(string name, int priority = 0) : base(name, priority)
         {
@@ -62,7 +39,7 @@ namespace BehaviourTrees
 
         public override State Process()
         {
-            // ÇÏ³ª¸¦ ¼±ÅÃÇØ¼­ ½ÇÇàÇÔ
+            // í•˜ë‚˜ë¥¼ ì„ íƒí•´ì„œ ì‹¤í–‰í•¨
             if(currentChild < children.Count)
             {
                 switch(children[currentChild].Process())
@@ -81,7 +58,7 @@ namespace BehaviourTrees
         }
     }
 
-    public class Sequence : Node // AND ÇÏ³ª¶óµµ failureÀÌ¸é ¸ðµÎ failure ¸ðµç ÀÚ½ÄÀÌ SuccessÀÌ¸é Success
+    public class Sequence : Node // AND í•˜ë‚˜ë¼ë„ failureì´ë©´ ëª¨ë‘ failure ëª¨ë“  ìžì‹ì´ Successì´ë©´ Success
     {
         public Sequence(string name, int priority = 0) : base(name, priority)
         {
@@ -99,9 +76,9 @@ namespace BehaviourTrees
                     case State.Running:
                         return State.Running;
                     default:
-                        // ÀÚ½Ä ³ëµå°¡ sucessÀÏ ¶§ ´ÙÀ½ ³ëµå·Î ÀÌµ¿
-                        // ¸ðµç ³ëµå ¼øÈ¸°¡ ³¡³¯ °æ¿ì sucess
-                        // ¼øÈ¸°¡ Á¾·áµÇÁö ¾Ê¾ÒÀ» °æ¿ì running
+                        // ìžì‹ ë…¸ë“œê°€ sucessì¼ ë•Œ ë‹¤ìŒ ë…¸ë“œë¡œ ì´ë™
+                        // ëª¨ë“  ë…¸ë“œ ìˆœíšŒê°€ ëë‚  ê²½ìš° sucess
+                        // ìˆœíšŒê°€ ì¢…ë£Œë˜ì§€ ì•Šì•˜ì„ ê²½ìš° running
                         currentChild++;
                         return currentChild == children.Count ? State.Sucess : State.Running;
                 }
@@ -109,17 +86,5 @@ namespace BehaviourTrees
             Reset();
             return State.Running;
         }
-    }
-
-    public class Leaf : Node
-    {
-        [SerializeField]
-        readonly IStrategy strategy;
-
-        public Leaf(string name, int priority) : base(name, priority) { }
-
-        public override State Process() => strategy.Process();
-
-        public override void Reset() => strategy.ResetStrategy();
     }
 }

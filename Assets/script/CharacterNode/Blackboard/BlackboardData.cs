@@ -1,0 +1,88 @@
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace BlackboardSystem
+{
+
+    [CreateAssetMenu(menuName = "New Blackboard Data")]
+    public class BlackboardData : ScriptableObject
+    {
+        public List<BlackbordEntryData> entries = new();
+
+        public void SetValuesOnBlackboard(Blackboard blackboard)
+        {
+            foreach (var entry in entries)
+            {
+                entry.SetValueOnBlackboard(blackboard);
+            }
+        }
+    }
+
+    [Serializable]
+    public class BlackbordEntryData : ISerializationCallbackReceiver
+    {
+        public string keyName;
+        public AnyValue.ValueType valueType;
+        public AnyValue value;
+
+        public void SetValueOnBlackboard(Blackboard blackboard)
+        {
+            var key = blackboard.GetOrRegisterKey(keyName);
+            setValueDispatchTable[value.type](blackboard, key, value);
+        }
+
+        // Dispatch table to set different types of value on the blackboard
+        static Dictionary<AnyValue.ValueType, Action<Blackboard, BlackboardKey, AnyValue>> setValueDispatchTable = new()
+        {
+            { AnyValue.ValueType.Bool, (blackboard, key, anyValue) => blackboard.SetValue<bool>(key, anyValue) },
+            { AnyValue.ValueType.Int, (blackboard, key, anyValue) => blackboard.SetValue<int>(key, anyValue) },
+            { AnyValue.ValueType.Float, (blackboard, key, anyValue) => blackboard.SetValue<float>(key, anyValue) },
+            { AnyValue.ValueType.String, (blackboard, key, anyValue) => blackboard.SetValue<string>(key, anyValue) },
+            { AnyValue.ValueType.Vector3, (blackboard, key, anyValue) => blackboard.SetValue<Vector3>(key, anyValue) },
+        };
+
+        public void OnBeforeSerialize() { }
+        public void OnAfterDeserialize() => value.type = valueType;
+    }
+
+    [Serializable]
+    public class AnyValue
+    {
+        public enum ValueType { Bool, Int, Float, String, Vector3 }
+        public ValueType type;
+
+        // Storage Different types of values
+        public bool boolValue;
+        public int intValue;
+        public float floatValue;
+        public string stringValue;
+        public Vector3 vector3Value;
+
+        // Implicit conversion operators to convert AnyValue to different types
+        public static implicit operator bool(AnyValue value) => value.ConvertValue<bool>();
+        public static implicit operator int(AnyValue value) => value.ConvertValue<int>();
+        public static implicit operator float(AnyValue value) => value.ConvertValue<float>();
+        public static implicit operator string(AnyValue value) => value.ConvertValue<string>();
+        public static implicit operator Vector3(AnyValue value) => value.ConvertValue<Vector3>();
+
+        T ConvertValue<T>()
+        {
+            return type switch
+            {
+                ValueType.Bool => AsBool<T>(boolValue),
+                ValueType.Int => AsInt<T>(intValue),
+                ValueType.Float => AsFloat<T>(floatValue),
+                ValueType.String => (T) (object) stringValue,
+                ValueType.Vector3 => (T) (object) vector3Value,
+                _ => throw new NotSupportedException($"Not supported value type: {typeof(T)}")
+            };
+        }
+
+        // Methods to convert primitive types to generic types with type safety and without boxing
+        T AsBool<T>(bool value) => typeof(T) == typeof(bool) && value is T correctType ? correctType : default;
+        T AsInt<T>(int value) => typeof(T) == typeof(int) && value is T correctType ? correctType : default;
+        T AsFloat<T>(float value) => typeof(T) == typeof(float) && value is T correctType ? correctType : default;
+    }
+
+}

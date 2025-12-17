@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
@@ -61,7 +61,7 @@ namespace CharacterStateMachine
         public virtual void Update() { }
         public virtual void Enter()
         {
-            Debug.Log($"StateMachine: Enter State: {this.GetType()}");
+            //Debug.Log($"StateMachine: Enter State: {this.GetType()}");
         }
         public virtual void Exit() { }
     }
