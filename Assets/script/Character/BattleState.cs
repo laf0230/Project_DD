@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace CharacterStateMachine
@@ -6,7 +6,7 @@ namespace CharacterStateMachine
     public class Player: IMovable
     {
         StateMachine stateMachine;
-        Animator animator;
+        AnimatorWrapper animator;
         bool isMovable = true;
 
         PlayerIdleState idle;
@@ -38,7 +38,7 @@ namespace CharacterStateMachine
 
     public class BattleState : State, IBattleInput
     {
-        public BattleState(StateMachine stateMachine, Animator animator) : base(stateMachine, animator)
+        public BattleState(StateMachine stateMachine, AnimatorWrapper animator) : base(stateMachine, animator)
         {
         }
 
@@ -51,7 +51,7 @@ namespace CharacterStateMachine
     {
         IMovable mMovable;
 
-        public PlayerIdleState(StateMachine stateMachine, Animator animator, IMovable movable) : base(stateMachine, animator)
+        public PlayerIdleState(StateMachine stateMachine, AnimatorWrapper animator, IMovable movable) : base(stateMachine, animator)
         {
             this.mMovable = movable;
         }
@@ -94,7 +94,7 @@ namespace CharacterStateMachine
     {
         IMovable movable;
 
-        public PlayerMoveState(StateMachine stateMachine, Animator animator, IMovable movable) : base(stateMachine, animator)
+        public PlayerMoveState(StateMachine stateMachine, AnimatorWrapper animator, IMovable movable) : base(stateMachine, animator)
         {
             this.movable = movable;
         }
@@ -132,9 +132,8 @@ namespace CharacterStateMachine
     public class PlayerAttackState : BattleState
     {
         IMovable movable;
-        float attackTime;
 
-        public PlayerAttackState(StateMachine stateMachine, Animator animator, IMovable movable) : base(stateMachine, animator)
+        public PlayerAttackState(StateMachine stateMachine, AnimatorWrapper animator, IMovable movable) : base(stateMachine, animator)
         {
             this.movable = movable;
         }
@@ -145,23 +144,16 @@ namespace CharacterStateMachine
 
             movable.SetIsMovable(false);
             animator.SetTrigger("AttackTrigger");
-            attackTime = animator.GetNextAnimatorStateInfo(0).length;
         }
 
         public override void Update()
         {
             base.Update();
 
-            if (attackTime > 0)
-            {
-                attackTime -= Time.deltaTime;
-                Debug.Log(attackTime);
-            }
-            else
+            if (animator.isActionFinished)
             {
                 stateMachine.ChangeState<PlayerIdleState>();
             }
-
         }
 
         public override void Exit()
@@ -175,9 +167,8 @@ namespace CharacterStateMachine
     public class PlayerDodgeState : BattleState
     {
         IMovable movable;
-        float animationTime;
 
-        public PlayerDodgeState(StateMachine stateMachine, Animator animator, IMovable movable) : base(stateMachine, animator)
+        public PlayerDodgeState(StateMachine stateMachine, AnimatorWrapper animator, IMovable movable) : base(stateMachine, animator)
         {
             this.movable = movable;
         }
@@ -188,22 +179,16 @@ namespace CharacterStateMachine
 
             movable.SetIsMovable(false);
             animator.SetTrigger("DodgeTrigger");
-            animationTime = animator.GetNextAnimatorStateInfo(0).length;
         }
 
         public override void Update()
         {
             base.Update();
 
-            if (animationTime > 0)
-            {
-                animationTime -= Time.deltaTime;
-            }
-            else
+            if (animator.isActionFinished)
             {
                 stateMachine.ChangeState<PlayerIdleState>();
             }
-
         }
 
         public override void Exit()
@@ -219,7 +204,7 @@ namespace CharacterStateMachine
         IMovable movable;
         float animationTime;
 
-        public PlayerDeadState(StateMachine stateMachine, Animator animator, IMovable movable) : base(stateMachine, animator)
+        public PlayerDeadState(StateMachine stateMachine, AnimatorWrapper animator, IMovable movable) : base(stateMachine, animator)
         {
             this.movable = movable;
         }
@@ -230,7 +215,7 @@ namespace CharacterStateMachine
 
             movable.SetIsMovable(false);
             animator.SetTrigger("DeadTrigger");
-            animationTime = animator.GetCurrentAnimatorStateInfo(0).length;
+            animationTime = animator.currentClip.length;
         }
 
         public override void Update()

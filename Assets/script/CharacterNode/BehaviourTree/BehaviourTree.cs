@@ -5,6 +5,7 @@ namespace BehaviourTrees
     [CreateAssetMenu(menuName = "New BehaviourTree")]
     public class BehaviourTree : Node
     {
+        [SerializeField] State currentState;
         public BehaviourTree(string name) : base(name)
         {
         }
@@ -13,14 +14,15 @@ namespace BehaviourTrees
         {
             while(currentChild < children.Count)
             {
-                var state = children[currentChild].Process();
+                currentState = children[currentChild].Process();
 
-                if(state != State.Sucess)
+                if(currentState != State.Sucess)
                 {
-                    return state;
+                    return currentState;
                 }
                 currentChild++;
             }
+            Reset();
             return State.Sucess;
         }
     }

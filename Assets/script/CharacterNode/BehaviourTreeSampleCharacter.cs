@@ -12,18 +12,14 @@ public class BehaviourTreeSampleCharacter : MonoBehaviour
     BlackboardKey isSafeKey;
     BlackboardKey bossPositionKey;
     BlackboardKey targetDistanceKey;
-    BlackboardKey isAttackableKey;
-    BlackboardKey distanceKey;
 
     private void Start()
     {
-        blackboard = Locator.Get<BlackboardController>().GetBlackboard();
+        blackboard = Locator.Get<BlackboardController>(this).GetBlackboard();
 
         isSafeKey = blackboard.GetOrRegisterKey("IsSafe");
         bossPositionKey = blackboard.GetOrRegisterKey("BossPosition");
         targetDistanceKey = blackboard.GetOrRegisterKey("TargetPosition");
-        isAttackableKey = blackboard.GetOrRegisterKey("IsAttackable");
-        distanceKey = blackboard.GetOrRegisterKey("Distance");
 
         bool IsSafe()
         {

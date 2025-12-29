@@ -22,7 +22,7 @@ public class BlackboardController: MonoBehaviour
 
     public void RegisterExpert(IExpert expert) => arbiter.RegisterExpert(expert);
 
-    //public void DeRegisterExpert(IExpert expert) => arbiter.DeRegisterExpert(expert);
+    public void DeRegisterExpert(IExpert expert) => arbiter.DeRegisterExpert(expert);
 
     private void Update()
     {

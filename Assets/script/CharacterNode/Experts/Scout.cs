@@ -13,8 +13,8 @@ public class Scout : MonoBehaviour, IExpert
 
     private void Start()
     {
-        blackboard = Locator.Get<BlackboardController>().GetBlackboard();
-        Locator.Get<BlackboardController>().RegisterExpert(this);
+        blackboard = Locator.Get<BlackboardController>(this).GetBlackboard();
+        Locator.Get<BlackboardController>(this).RegisterExpert(this);
     }
 
     public int GetInsistence(Blackboard blackboard)

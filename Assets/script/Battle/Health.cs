@@ -1,3 +1,5 @@
+﻿using BlackboardSystem;
+using ServiceLocator;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -9,7 +11,7 @@ public class Health : MonoBehaviour
     public UnityEvent<float> OnDamaged = new();
     public UnityEvent OnDead = new();
 
-    private void Start()
+    public virtual void Start()
     {
         currentHealth = maxHealth;
 

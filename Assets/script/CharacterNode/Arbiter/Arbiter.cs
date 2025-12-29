@@ -13,6 +13,11 @@ namespace BlackboardSystem
             experts.Add(expert);
         }
 
+        public void DeRegisterExpert(IExpert exepert)
+        {
+            experts.Remove(exepert);
+        }
+
         public List<Action> BlackboardIteration(Blackboard blackboard)
         {
             IExpert bestExpert = null;
@@ -26,6 +31,12 @@ namespace BlackboardSystem
                     hightestInsistence = insistence;
                     bestExpert = expert;
                 }
+            }
+
+            if (bestExpert != null)
+            {
+                Debug.Log($"[Arbiter] Winner: {bestExpert.GetType().Name} with score {hightestInsistence}");
+                bestExpert.Execute(blackboard);
             }
             bestExpert?.Execute(blackboard);
 

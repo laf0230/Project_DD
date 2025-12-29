@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace CharacterStateMachine
 {
@@ -8,7 +8,7 @@ namespace CharacterStateMachine
         public InvestCharacterMoveState moveState;
         public InvestCharacterTalkState talkState;
 
-        public InvestCharacter(StateMachine stateMachine, Animator animator) : base(stateMachine, animator)
+        public InvestCharacter(StateMachine stateMachine, AnimatorWrapper animator) : base(stateMachine, animator)
         {
         }
 
@@ -20,14 +20,14 @@ namespace CharacterStateMachine
 
     public class InvestCharacterTalkState : State
     {
-        public InvestCharacterTalkState(StateMachine stateMachine, Animator animator) : base(stateMachine, animator)
+        public InvestCharacterTalkState(StateMachine stateMachine, AnimatorWrapper animator) : base(stateMachine, animator)
         {
         }
     }
 
     public class InvestCharacterMoveState : State
     {
-        public InvestCharacterMoveState(StateMachine stateMachine, Animator animator) : base(stateMachine, animator)
+        public InvestCharacterMoveState(StateMachine stateMachine, AnimatorWrapper animator) : base(stateMachine, animator)
         {
         }
     }

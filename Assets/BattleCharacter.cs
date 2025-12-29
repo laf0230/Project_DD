@@ -1,4 +1,4 @@
-using CharacterStateMachine;
+﻿using CharacterStateMachine;
 using StarterAssets;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class BattleCharacter : MonoBehaviour, IBattleInput
 {
     StateMachine StateMachine { get; set; }
-    Animator animator;
+    AnimatorWrapper animator;
     IMovable controller;
 
     PlayerIdleState idle;
@@ -14,10 +14,14 @@ public class BattleCharacter : MonoBehaviour, IBattleInput
     PlayerAttackState attack;
     PlayerDodgeState dodge;
 
+    [Header("Debug")]
+    [SerializeField] private bool StateDebug = false;
+    private bool isStateDebuging = false;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        animator = GetComponent<Animator>();
+        animator = GetComponent<AnimatorWrapper>();
 
         if (GetComponent<ThirdPersonController>() != null)
         {
@@ -38,6 +42,17 @@ public class BattleCharacter : MonoBehaviour, IBattleInput
     void Update()
     {
         StateMachine?.Update();
+
+        if(StateDebug && !isStateDebuging)
+        {
+            StateMachine.isDebugActive = true;
+            isStateDebuging = true;
+        }
+        else if(!StateDebug && isStateDebuging)
+        {
+            StateMachine.isDebugActive = false;
+            isStateDebuging = false;
+        }
     }
 
     public void OnMove(InputAction.CallbackContext context)

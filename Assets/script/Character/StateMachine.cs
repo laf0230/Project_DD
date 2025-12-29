@@ -8,6 +8,7 @@ namespace CharacterStateMachine
     {
         public List<State> states = new();
         public State currentState;
+        public bool isDebugActive = false;
 
         public StateMachine AddState(State state)
         {
@@ -39,6 +40,8 @@ namespace CharacterStateMachine
 
         public void ChangeState<T>() where T : State
         {
+            if(isDebugActive)
+                Debug.Log($"Player State Changed {currentState.GetType()} to {typeof(T)}");
             currentState?.Exit();
             currentState = GetStateFromStateList<T>();
             currentState?.Enter();
@@ -50,19 +53,16 @@ namespace CharacterStateMachine
     public class State
     {
         public StateMachine stateMachine { get; set; }
-        public Animator animator { get; set; }
+        public AnimatorWrapper animator { get; set; }
 
-        public State(StateMachine stateMachine, Animator animator)
+        public State(StateMachine stateMachine, AnimatorWrapper animator)
         {
             this.stateMachine = stateMachine;
             this.animator = animator;
         }
 
         public virtual void Update() { }
-        public virtual void Enter()
-        {
-            //Debug.Log($"StateMachine: Enter State: {this.GetType()}");
-        }
+        public virtual void Enter() { }
         public virtual void Exit() { }
     }
 }

@@ -7,47 +7,46 @@ namespace BehaviourTrees
     [CreateAssetMenu(menuName = "Node/Decorator")]
     public class Decorator : Sequence
     {
-        [SerializeField] string key;
-        BlackboardKey conditionKey;
-        Blackboard blackboard;
-        bool initialized = false;
+        enum ComprisonOperator
+        {
+           NotEqual, Less, LessEqual, Equal, GreaterEqual, Greater
+        }
+
+        [Header("관측할 데이터")]
+        [SerializeField] BlackboardEntryData conditionData;
+        [Header("연산자")]
+        [SerializeField] ComprisonOperator comprisonOperator;
+        [Header("목표치")]
+        [SerializeField] BlackboardEntryData targetValue;
 
         public Decorator(string name, int priority = 0) : base(name, priority)
         {
         }
 
-        private void OnEnable()
-        {
-            initialized = false;
-        }
-
         public override State Process()
         {
-            if (!initialized)
-            {
-                blackboard = Locator.Get<BlackboardController>().GetBlackboard();
-                conditionKey = blackboard.GetOrRegisterKey(key);
-                initialized = true;
-            }
+            var result = CheckAchived() ? State.Sucess : State.Failure;
+            Debug.Log($"Condition: Key {conditionData.keyName} Value {conditionData.value}, Compatition To: Key {targetValue.keyName} Value {targetValue.value}");
+            return result;
+        }
 
-            if (blackboard.TrygetValue(conditionKey, out bool isAchived) && isAchived) // Receive Only bool value
-            {
-                foreach (var child in children)
-                {
-                    Debug.Log("Achived");
-                    switch (child.Process())
-                    {
-                        case State.Running:
-                            return State.Running;
-                        case State.Sucess:
-                            continue;
-                        case State.Failure:
-                            continue;
-                    }
-                }
-            }
+        public bool CheckAchived()
+        {
+            if (conditionData == null || targetValue == null) return false;
 
-            return State.Running;
+            AnyValue current = conditionData.value;
+            AnyValue target = targetValue.value;
+
+            return comprisonOperator switch
+            {
+                ComprisonOperator.Equal => current.Equals(target),
+                ComprisonOperator.NotEqual => !current.Equals(target),
+                ComprisonOperator.Less => current.CompareTo(target) < 0,
+                ComprisonOperator.LessEqual => current.CompareTo(target) <= 0,
+                ComprisonOperator.Greater => current.CompareTo(target) > 0,
+                ComprisonOperator.GreaterEqual => current.CompareTo(target) >= 0,
+                _ => false
+            };
         }
     }
 }

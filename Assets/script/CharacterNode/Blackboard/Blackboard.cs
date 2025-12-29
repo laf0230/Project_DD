@@ -72,7 +72,7 @@ namespace BlackboardSystem
                     var valueProperty = entryType.GetProperty("Value");
                     if (valueProperty == null) continue;
                     var value = valueProperty.GetValue(entry.Value);
-                    UnityEngine.Debug.Log($"Key: {entry.Value.ToString()}, Value: {value}");
+                    UnityEngine.Debug.Log($"Key: {entry.Key}, Value: {value}");
                 }
             }
         }

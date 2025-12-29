@@ -7,7 +7,7 @@ namespace BehaviourTrees
     public class AttackStrategy : Strategy
     {
         [SerializeField] int actionID;
-        private BossAnimatorController animWrapper;
+        private BossAnimatorWrapper animWrapper;
 
         bool isFirstTime = true;
 
@@ -20,7 +20,7 @@ namespace BehaviourTrees
         public override Node.State Process()
         {
             if (animWrapper == null)
-                animWrapper = Locator.Get<BossAnimatorController>();
+                animWrapper = Locator.Get<BossAnimatorWrapper>(this);
 
             if(isFirstTime)
             {
