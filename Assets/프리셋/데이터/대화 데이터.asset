@@ -13,31 +13,26 @@ MonoBehaviour:
   m_Name: "\uB300\uD654 \uB370\uC774\uD130"
   m_EditorClassIdentifier: 
   talkList:
-  - condition: []
-    ID: Sample
+  - ID: Sample
     talkLineList:
-    - condition: []
-      speakerData:
+    - speakerData:
         name: A
         emotionName: Normal
       otherDataList: []
       talkID: 
       talkText: Hi XD
-    - condition: []
-      speakerData:
+    - speakerData:
         name: B
         emotionName: Normal
       otherDataList: []
       talkID: 
       talkText: Hello :V
     talkSelectionList:
-    - condition: []
-      selectionText: Babo
+    - selectionText: Babo
       action:
         m_PersistentCalls:
           m_Calls: []
-    - condition: []
-      selectionText: jongmin
+    - selectionText: jongmin
       action:
         m_PersistentCalls:
           m_Calls: []

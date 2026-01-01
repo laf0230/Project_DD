@@ -17,10 +17,10 @@ namespace BehaviourTrees
 
         public override State Process()
         {
-            Debug.Log($"[Selector] Current Node: {children[currentChild]}");
             // 하나를 선택해서 실행함
             if(currentChild < children.Count)
             {
+                Debug.Log($"[Selector] Current Node: {children[currentChild]}");
                 currentState = children[currentChild].Process();
 
                 switch(currentState)
