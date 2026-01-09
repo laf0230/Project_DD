@@ -2261,6 +2261,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2430886482983846814, guid: 4b99c7e1eba02a841804677a3f8fb942, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1397416025}
+    - targetCorrespondingSourceObject: {fileID: 1922261622483580646, guid: 4b99c7e1eba02a841804677a3f8fb942, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1622731248}
+    - targetCorrespondingSourceObject: {fileID: 1922261622483580646, guid: 4b99c7e1eba02a841804677a3f8fb942, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1622731247}
     - targetCorrespondingSourceObject: {fileID: 7756117492596544233, guid: 4b99c7e1eba02a841804677a3f8fb942, type: 3}
       insertIndex: -1
       addedObject: {fileID: 859131055}
@@ -2268,6 +2274,53 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 859131054}
   m_SourcePrefab: {fileID: 100100000, guid: 4b99c7e1eba02a841804677a3f8fb942, type: 3}
+--- !u!1 &1622731246 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1922261622483580646, guid: 4b99c7e1eba02a841804677a3f8fb942, type: 3}
+  m_PrefabInstance: {fileID: 1622731245}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1622731247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1622731246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5053b61f0c2f90f4aa113c7bda04ea76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnInterected:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1622731248}
+        m_TargetAssemblyTypeName: ClueController, Assembly-CSharp
+        m_MethodName: AddClue
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  interectionType: 0
+--- !u!114 &1622731248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1622731246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af5e5036b8a5d0640a721e1fdae68309, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clueID: Sample5
+  clueLevel: 1
 --- !u!1 &1640881102 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 9043057509258078532, guid: 4b99c7e1eba02a841804677a3f8fb942, type: 3}

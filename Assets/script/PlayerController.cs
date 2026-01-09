@@ -110,7 +110,6 @@ public partial class PlayerController : MonoBehaviour
     public void Interection(InputAction.CallbackContext context)
     {
         if (focusCursor == null) Debug.LogError("커서 UI를 찾지 못했습니다.\n" + new NullReferenceException());
-        if (currentState == PlayerState.Investigation) return;
 
         if (context.started)
             tryInterection = true;
