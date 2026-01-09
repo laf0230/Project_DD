@@ -110,7 +110,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 2bdd4c8e573107140a6cd7e01aa073e2, type: 3}
       propertyPath: m_Name
-      value: passage_H 1
+      value: "\uD1B5\uB85C_\uBCBD"
       objectReference: {fileID: 0}
     - target: {fileID: 3291460997423930385, guid: 2bdd4c8e573107140a6cd7e01aa073e2, type: 3}
       propertyPath: m_LocalScale.y
