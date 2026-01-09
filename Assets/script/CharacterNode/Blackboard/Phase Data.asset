@@ -17,7 +17,7 @@ MonoBehaviour:
   value:
     type: 1
     boolValue: 0
-    intValue: 0
+    intValue: 1
     floatValue: 1
     stringValue: 
     vector3Value: {x: 0, y: 0, z: 0}

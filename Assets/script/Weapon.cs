@@ -1,12 +1,12 @@
-using System.Threading.Tasks;
+ï»¿using System.Threading.Tasks;
 using UnityEngine;
 
-public class Weapon: MonoBehaviour, IColliderUse
+public class Weapon: MonoBehaviour
 {
     public string weaponName;
     public float damage;
     public float range = 1f;
-    [Tooltip("¿òÁ÷ÀÓ Á¦ÇÑ/¹«±â ÈÖµÎ¸£´Â½Ã°£")]
+    [Tooltip("ì›€ì§ì„ ì œí•œ/ë¬´ê¸° íœ˜ë‘ë¥´ëŠ”ì‹œê°„")]
     public int msDuration = 500;
 
     public async void Use(Combat user)

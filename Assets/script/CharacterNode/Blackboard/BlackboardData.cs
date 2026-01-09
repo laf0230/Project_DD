@@ -67,6 +67,13 @@ namespace BlackboardSystem
 
             EditorGUILayout.EndHorizontal();
 
+            var entryData = (BlackboardEntryData) target;
+
+            if(GUILayout.Button("Apply"))
+            {
+                entryData.UpdateEntryData();
+            }
+
             serializedObject.ApplyModifiedProperties();
         }
     }

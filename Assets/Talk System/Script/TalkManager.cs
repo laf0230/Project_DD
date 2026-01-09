@@ -1,7 +1,9 @@
 ﻿using Assets.script.Talk_System;
 using NUnit.Framework.Constraints;
+using ServiceLocator;
 using StarterAssets;
 using System.Collections.Generic;
+using Talk;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -34,7 +36,8 @@ public class TalkManager : MonoBehaviour
     private PlayerController playerController;
     private int currentIndex = 0;
     private bool isSelectionActivated = false;
-    private bool isDialogue = false;
+    public bool isDialogue = false;
+    private ITalkableObject talkable;
 
     private static TalkManager instance;
 
@@ -49,7 +52,7 @@ public class TalkManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        Debug.Log(instance);
+        Locator.Subscribe(this);
     }
 
     private void Start()
@@ -59,6 +62,7 @@ public class TalkManager : MonoBehaviour
             Debug.LogWarning("dialogue Container is empty");
         }
 
+        dialogueContainer.gameObject.SetActive(true);
         dialogueUI = Instantiate(dialogueUIPrefab, dialogueContainer, false);
         dialogueUI.gameObject.SetActive(false);
         //dialogueUI.OnPointerUp.AddListener(NextDialogue);
@@ -81,13 +85,25 @@ public class TalkManager : MonoBehaviour
         //ActiveDialogue("Sample");
     }
 
-    public void ActiveDialogue(string dialogueID)
+    public void InitDialogue()
     {
+        currentIndex = 0;
+        activatedSelectionCount = 0;
+        foreach(var selectionUI in selectionUIs)
+        {
+            selectionUI.gameObject.SetActive(false);
+        }
+    }
+    public void ActiveDialogue(ITalkableObject talkable, string dialogueID)
+    {
+        this.talkable = talkable;
         playerController = FindAnyObjectByType<PlayerController>();
         playerController.UpdateState(PlayerState.Conversation);
-        currentIndex = 0;
+        InitDialogue();
         isSelectionActivated = false;
         isDialogue = true;
+
+        dialogueContainer.gameObject.SetActive(true);
 
         var nodes = talkData.TalkNodes;
 
@@ -101,11 +117,24 @@ public class TalkManager : MonoBehaviour
                 dialogueUI.Name = currentLine.speakerData.name;
                 dialogueUI.Description = currentLine.talkText;
                 VisualizeCharacter();
+                Debug.Log($"[TalkManager] Required Talk ID is : {dialogueID}");
                 return;
             }
         }
 
         Debug.LogError("Couldn't find id matched dialogue");
+    }
+
+    public void EndDialogue()
+    {
+        InitDialogue();
+        playerController.UpdateState(PlayerState.Investigation);
+        dialogueContainer.gameObject.SetActive(false);
+        talkable.EndDialogue();
+        isDialogue = false;
+        isSelectionActivated = false;
+
+        // Todo 대사 종료 후 트리거 업데이트
     }
 
     private void VisualizeCharacter()
@@ -192,9 +221,7 @@ public class TalkManager : MonoBehaviour
     public void NextDialogue()
     {
         // 선택지가 이미 활성화되어 있을 경우 예외처리
-        currentIndex++;
-
-        if (isSelectionActivated)
+        if (isSelectionActivated || !isDialogue)
             return;
 
         if(currentNode.talkLineList.Count-1 < currentIndex)
@@ -223,14 +250,6 @@ public class TalkManager : MonoBehaviour
             dialogueUI.Name = currentLine.speakerData.name;
             dialogueUI.Description = currentLine.talkText;
         }
-    }
-
-    public void EndDialogue()
-    {
-        playerController.UpdateState(PlayerState.Investigation);
-        dialogueContainer.gameObject.SetActive(false);
-        isDialogue = false;
-
-        // Todo 대사 종료 후 트리거 업데이트
+        currentIndex++;
     }
 }

@@ -1,3 +1,4 @@
+ï»¿using ServiceLocator;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -9,34 +10,30 @@ namespace Inference
         public ClueDataStroage clueData;
         public Dictionary<string, IClue> ownClueContainer = new();
         public Dictionary<string, Clue> selectedClueList;
+        public InferenceUI inferenceUI;
 
-        // ´Ü¼­ ÇØ±İ ±â´É ¸ñ·Ï
-        // Complate ´Ü¼­ ¼³¸í ·¹º§¿¡ µû¶ó¼­ ´Ü¼­ ÅØ½ºÆ® ÇØ±İ
-        // Complate ´Ü¼­ ÀÚÃ¼ ÇØ±İ
-        // Todo ´Ü¼­ ¹İÈ¯
-        // Todo ±âÈ¹ÀÚ°¡ ¼³Á¤ÇÏ±â ½±°Ô ÀÌº¥Æ® Ãß°¡
+        // ë‹¨ì„œ í•´ê¸ˆ ê¸°ëŠ¥ ëª©ë¡
+        // Complate ë‹¨ì„œ ì„¤ëª… ë ˆë²¨ì— ë”°ë¼ì„œ ë‹¨ì„œ í…ìŠ¤íŠ¸ í•´ê¸ˆ
+        // Complate ë‹¨ì„œ ìì²´ í•´ê¸ˆ
+        // Todo ë‹¨ì„œ ë°˜í™˜
+        // Todo ê¸°íšìê°€ ì„¤ì •í•˜ê¸° ì‰½ê²Œ ì´ë²¤íŠ¸ ì¶”ê°€
 
-        // ´Ü¼­ »ç¿ë ±â´É ¸ñ·Ï
-        // Complate Todo ÅÂ±×º°·Î Á¤·Ä
-        // Complete ÅÂ±×¿¡ ¸Â´Â ´Ü¼­¸ñ·Ï È£Ãâ (ID°ª, ClueData)
+        // ë‹¨ì„œ ì‚¬ìš© ê¸°ëŠ¥ ëª©ë¡
+        // Complate Todo íƒœê·¸ë³„ë¡œ ì •ë ¬
+        // Complete íƒœê·¸ì— ë§ëŠ” ë‹¨ì„œëª©ë¡ í˜¸ì¶œ (IDê°’, ClueData)
 
-        // ´Ü¼­ ºĞ·ù
-        // Todo ±âÈ¹ÀÚ°¡ ¿øÇÏ´Â ÅÂ±×¸¦ ±âÁØÀ¸·Î Ä«Å×°í¸®¸¦ ³ª´­ ¼ö ÀÖµµ·Ï ÀÛ¼º - ÀÌÈÄ¿¡ Ãß°¡ÀûÀÎ È®Àå¼ºÀ» °í·ÁÇÔ(ex. Á¢´Â ±â´É µî)
-        // Todo ±âÈ¹ÀÚ°¡ UI¿¡¼­ ÅÂ±×¸¦ ÀÔ·ÂÇÏ¸é ÇØ´ç ÅÂ±×¸¦ ±âÁØÀ¸·Î Á¤·ÄµÇ´Â ¹æ½Ä Ã¤¿ë
+        // ë‹¨ì„œ ë¶„ë¥˜
+        // Todo ê¸°íšìê°€ ì›í•˜ëŠ” íƒœê·¸ë¥¼ ê¸°ì¤€ìœ¼ë¡œ ì¹´í…Œê³ ë¦¬ë¥¼ ë‚˜ëˆŒ ìˆ˜ ìˆë„ë¡ ì‘ì„± - ì´í›„ì— ì¶”ê°€ì ì¸ í™•ì¥ì„±ì„ ê³ ë ¤í•¨(ex. ì ‘ëŠ” ê¸°ëŠ¥ ë“±)
+        // Todo ê¸°íšìê°€ UIì—ì„œ íƒœê·¸ë¥¼ ì…ë ¥í•˜ë©´ í•´ë‹¹ íƒœê·¸ë¥¼ ê¸°ì¤€ìœ¼ë¡œ ì •ë ¬ë˜ëŠ” ë°©ì‹ ì±„ìš©
 
         private void Awake()
         {
-            foreach (var clue in clueData.clueCollection)
-            {
-                for (int i = 0; i < clue.Value.DescriptionLength; i++)
-                {
-                    AddClue(clue.Key, i);
-                }
-            }
+            Locator.Subscribe(this);
         }
 
         public void AddClue(string id, int descriptionLevel = 0)
         {
+            
             var unIdentifiedClue = clueData.GetClue(id);
 
             if (!ownClueContainer.ContainsKey(id))
@@ -60,12 +57,13 @@ namespace Inference
             ownClueContainer[id].Description[descriptionLevel] = unIdentifiedClue.Description[descriptionLevel];
             Debug.Log("InferenceManager: " + ownClueContainer[id].Description[descriptionLevel] + " Description Added");
 
+            inferenceUI.ActiveAlertUI(unIdentifiedClue);
         }
 
         public IClue GetClue(string id) => ownClueContainer[id];
 
-        // Ä«Å×°í¸® UI ¹öÆ°À» ´­·¶À» ¶§ ÇØ´çÇÏ´Â ¸ñ·Ï¸¸ È°¼ºÈ­ÇÏ´Â ¹æ½ÄÀ» »ç¿ë
-        // Æ¯Á¤ ÅÂ±×·Î ¿äÃ»ÇÏ¸é ÇØ´ç ÅÂ±×¿¡ ¸Â´Â µ¥ÀÌÅÍ ¹İÈ¯
+        // ì¹´í…Œê³ ë¦¬ UI ë²„íŠ¼ì„ ëˆŒë €ì„ ë•Œ í•´ë‹¹í•˜ëŠ” ëª©ë¡ë§Œ í™œì„±í™”í•˜ëŠ” ë°©ì‹ì„ ì‚¬ìš©
+        // íŠ¹ì • íƒœê·¸ë¡œ ìš”ì²­í•˜ë©´ í•´ë‹¹ íƒœê·¸ì— ë§ëŠ” ë°ì´í„° ë°˜í™˜
         public List<IClue> GetClassifiedClueDataByTag(string tag)
         {
             var result = new List<IClue>();
@@ -116,7 +114,7 @@ namespace Inference
             ownClueContainer.Add(name, ClueRecipe.CreateRecipe(UniqueIDGenerator.GenerateUniqueId(name), name, new string[] { "Sentence" }, ids, 0));
         }
 
-        [ContextMenu("º¸À¯ÇÑ ´Ü¼­ Ãâ·Â")]
+        [ContextMenu("ë³´ìœ í•œ ë‹¨ì„œ ì¶œë ¥")]
         private void PrintOwnClues()
         {
             Debug.Log(string.Join(", ", ownClueContainer.Keys));
@@ -133,7 +131,7 @@ namespace Inference
         // CombineClues to Sentence
         public void CombineClues()
         {
-            // clue¸¦ ¸®½ºÆ®·Î °®°í ÀÖ¾î¾ßÇÔ, ÀÌ ¸®½ºÆ®¸¦ ÇÏ³ª·Î °ü¸®ÇÏ´Â ¸®½ºÆ®°¡ ÇÊ¿äÇÔ
+            // clueë¥¼ ë¦¬ìŠ¤íŠ¸ë¡œ ê°–ê³  ìˆì–´ì•¼í•¨, ì´ ë¦¬ìŠ¤íŠ¸ë¥¼ í•˜ë‚˜ë¡œ ê´€ë¦¬í•˜ëŠ” ë¦¬ìŠ¤íŠ¸ê°€ í•„ìš”í•¨
             createdClueList.Add(createdClueList.Count+1, selectedClueList);
             selectedClueList.Clear();
         }

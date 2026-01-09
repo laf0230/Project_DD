@@ -1,4 +1,6 @@
-using Inference;
+ï»¿using Inference;
+using ServiceLocator;
+using StarterAssets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +12,10 @@ public class InferenceUI : MonoBehaviour
 {
     [SerializeField] InferenceManager manager;
     [SerializeField] ClueUI clueUiPrefab;
-    [SerializeField] Transform clueUiContainer; // ºĞ·ùµÈ ´Ü¼­ UI ºÎ¸ğ
+    [SerializeField] Transform clueUiContainer; // ë¶„ë¥˜ëœ ë‹¨ì„œ UI ë¶€ëª¨
     [SerializeField] Dictionary<string, ClueUI> clueUis = new();
     [SerializeField] List<UIContainer> uis = new();
+    [SerializeField] InferenceAlertUI alertUi;
 
     [Header("Inference Note")]
     [SerializeField] Transform inferenceNoteClueUiContainer;
@@ -29,14 +32,27 @@ public class InferenceUI : MonoBehaviour
     private int currentOrder;
     private string lastOpendUIName;
 
+    private void Awake()
+    {
+        Locator.Subscribe(this);
+    }
+
     private void Start()
     {
         lastOpendUIName = uis[0].name;
+        //OpenUI(lastOpendUIName);
+    }
+
+    public void OpenUI()
+    {
+        clueUiContainer.gameObject.SetActive(true);
         OpenUI(lastOpendUIName);
     }
 
     public void OpenUI(string uiName)
     {
+        Locator.Get<PlayerController>(this).UpdateState(PlayerState.Conversation);
+
         for(int i=0; i < uis.Count; i++)
         {
             if (uis[i].name == uiName)
@@ -49,10 +65,16 @@ public class InferenceUI : MonoBehaviour
         }
     }
 
+    public void CloseUI()
+    {
+        Locator.Get<PlayerController>(this).UpdateState(PlayerState.Investigation);
+        clueUiContainer.gameObject.SetActive(false);
+    }
+
     public void SetClueName(string clueName) => combinedClueName = clueName;
 
     // if Push the button
-    // Complete Ä«Å×°í¸® UI Á¦ÀÛ ÈÄ ¹öÆ°À» ÅëÇÑ È£Ãâ·Î ¸ñ·Ï ¾÷µ¥ÀÌÆ®
+    // Complete ì¹´í…Œê³ ë¦¬ UI ì œì‘ í›„ ë²„íŠ¼ì„ í†µí•œ í˜¸ì¶œë¡œ ëª©ë¡ ì—…ë°ì´íŠ¸
     public void ClassificationClueUI(string categoryTag)
     {
         var clues = manager.GetClassifiedClueDataByTag(categoryTag);
@@ -128,7 +150,7 @@ public class InferenceUI : MonoBehaviour
     {
         if(selectedClue.Count < selectedClueLimit)
         {
-            Debug.LogWarning("Á¶ÇÕ¿¡ ÇÊ¿äÇÑ ´Ü¼­°¡ ¸ğÀÚ¸¨´Ï´Ù.");
+            Debug.LogWarning("ì¡°í•©ì— í•„ìš”í•œ ë‹¨ì„œê°€ ëª¨ìë¦…ë‹ˆë‹¤.");
         }
         else
         {
@@ -139,6 +161,11 @@ public class InferenceUI : MonoBehaviour
             }
             manager.AddCombinedClue(combinedClueName, result);
         }
+    }
+
+    public void ActiveAlertUI(IClue clue)
+    {
+        alertUi.ActiveAlert(clue);
     }
 
     [System.Serializable]

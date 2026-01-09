@@ -21,7 +21,7 @@ namespace BlackboardSystem
         public List<Action> BlackboardIteration(Blackboard blackboard)
         {
             IExpert bestExpert = null;
-            int hightestInsistence = 0;
+            int hightestInsistence = -1;
 
             foreach (IExpert expert in experts)
             {
@@ -36,8 +36,15 @@ namespace BlackboardSystem
             if (bestExpert != null)
             {
                 Debug.Log($"[Arbiter] Winner: {bestExpert.GetType().Name} with score {hightestInsistence}");
-                bestExpert.Execute(blackboard);
             }
+            else if(bestExpert == null)
+            {
+                Debug.Log($"[Arbiter] No ones winner {experts[0].GetInsistence(blackboard)}");
+            }
+
+            if (experts[0] == null)
+                Debug.LogError("[Arbiter] Expert List is null.");
+
             bestExpert?.Execute(blackboard);
 
             var actions = new List<Action>(blackboard.PassedActions);

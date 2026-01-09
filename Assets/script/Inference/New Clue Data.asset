@@ -100,6 +100,23 @@ MonoBehaviour:
     - 
     - 
     - 
+  - id: Sample5
+    imagePath: 
+    name: Terminal
+    tags:
+    - Tool
+    - Person
+    description:
+    - description: Hello.
+      index: 26
+    - description: Its
+      index: 1
+    - description: Just Robot
+      index: 2
+    linkedClueId:
+    - 
+    - 
+    - 
   sample:
   - id: A
     imagePath: Camera.png

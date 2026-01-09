@@ -37,33 +37,44 @@ namespace BlackboardSystem
 
         public virtual void Execute(Blackboard blackboard)
         {
+            Debug.Log("[Expert] Execute");
+            // Execute 호출 시점의 프레임 값을 캡처
+            float frameToCompare = currentFrame;
+
             blackboard.AddAction(() =>
             {
                 KeyFrameEntryData bestMatch = null;
-                float minDifference = 0.11f; // Slightly larger than your 0.1 tolerance
 
-                foreach (var entry in entries)
+                for(int i = 0; i < entries.Count; i++)
                 {
-                    float diff = Mathf.Abs(currentFrame - entry.time);
-
-                    // If the difference is within the 0.1 margin
-                    if (diff <= 0.1f)
+                    if (entries[i].time >= frameToCompare)
                     {
-                        // Ensure we pick the absolute closest one if multiple exist
-                        if (diff < minDifference)
-                        {
-                            minDifference = diff;
-                            bestMatch = entry;
-                        }
+                        bestMatch = entries[i];
+                        break;
                     }
                 }
+                Debug.Log($"[Expert] bestMatched entry: {bestMatch}, score: {bestMatch.time} >= {frameToCompare}"); 
 
                 if (bestMatch != null)
                 {
+                    // 2. Blackboard에 값 설정
+                    // BlackboardKey와 TargetData의 값을 사용하여 실제 블랙보드 갱신
+                    bestMatch.blackboardEntryData.SetValueOnBlackboard(blackboard);
+
+                    // 3. 데이터 동기화
                     var finalValue = bestMatch.blackboardEntryTargetData.value;
                     bestMatch.blackboardEntryData.value = finalValue;
 
+                    Debug.Log($"[Expert] Best match found: {bestMatch.weight} (Target Value: {finalValue})");
+
+                    bestMatch.blackboardEntryData.UpdateEntryData();
+
+                    // 인스펙터 확인용 인덱스 업데이트
                     selectedEntry = entries.IndexOf(bestMatch);
+                }
+                else
+                {
+                    Debug.LogWarning($"[Expert] {frameToCompare} 이하의 적절한 KeyFrameEntryData를 찾지 못했습니다.");
                 }
             });
         }
@@ -72,15 +83,18 @@ namespace BlackboardSystem
         {
             var weightValue = weightCurve.Evaluate(trackedData.value);
 
+            int minValue = 1;
+
             var finalValue = Mathf.Floor(weightValue * 10) / 10;
 
-            currentFrame = finalValue;
+            currentFrame = trackedData.value;
             Debug.Log($"Expert FameDebug: {currentFrame}");
 
             // Select Nearest Data
 
             var result = currentFrame * multiplyValue;
-            return Mathf.FloorToInt(result);
+            Debug.Log($"[Expert] My Score is {result}");
+            return Mathf.FloorToInt(result) == 0 ? minValue : Mathf.FloorToInt(result);
         }
     }
 

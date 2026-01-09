@@ -12,10 +12,24 @@ namespace BlackboardSystem
         public AnyValue.ValueType valueType;
         public AnyValue value;
 
+        public Blackboard _blackboard {get; private set;}
+        public BlackboardKey _key { get; private set; }
+
+        private void OnEnable()
+        {
+            _blackboard = null;
+        }
+
         public void SetValueOnBlackboard(Blackboard blackboard)
         {
-            var key = blackboard.GetOrRegisterKey(keyName);
-            setValueDispatchTable[value.type](blackboard, key, value);
+            _blackboard = blackboard;
+            _key = blackboard.GetOrRegisterKey(keyName);
+            setValueDispatchTable[value.type](blackboard, _key, value);
+        }
+
+        public void UpdateEntryData()
+        {
+            _blackboard.SetValue(_key, value);
         }
 
         // Dispatch table to set different types of value on the blackboard

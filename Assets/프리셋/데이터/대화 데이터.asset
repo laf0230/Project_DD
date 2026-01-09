@@ -36,3 +36,26 @@ MonoBehaviour:
       action:
         m_PersistentCalls:
           m_Calls: []
+  - ID: 2ndTalk
+    talkLineList:
+    - speakerData:
+        name: A
+        emotionName: Normal
+      otherDataList: []
+      talkID: 
+      talkText: It's 2nd Talk
+    - speakerData:
+        name: B
+        emotionName: Normal
+      otherDataList: []
+      talkID: 
+      talkText: Hello :V
+    talkSelectionList:
+    - selectionText: Babo
+      action:
+        m_PersistentCalls:
+          m_Calls: []
+    - selectionText: jongmin
+      action:
+        m_PersistentCalls:
+          m_Calls: []

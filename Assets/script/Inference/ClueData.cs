@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,23 +14,26 @@ namespace Inference
     public class ClueDataStroage : ScriptableObject
     {
         public TextAsset data;
-        [Header("½ÃÀÛ ÁÙ")]
+        [Header("ì‹œì‘ ì¤„")]
         public int START_LINE;
         public Clue[] clues;
         public Clue[] sample;
 
         public ClueRecipe[] recipes;
 
-        [Header("ºôµå Àü¿ë")]
+        [Header("ë¹Œë“œ ì „ìš©")]
         public bool isForBuild = false;
 
-        public Dictionary<string, IClue> clueCollection = new();
+        private void OnEnable()
+        {
+            
+        }
 
-        [ContextMenu("ÆÄÀÏ¿¡¼­ µ¥ÀÌÅÍ ºÒ·¯¿À±â")]
+        [ContextMenu("íŒŒì¼ì—ì„œ ë°ì´í„° ë¶ˆëŸ¬ì˜¤ê¸°")]
         public void Convert()
         {
             // -----------------------------
-            // 1. ÁÙ ÀÌ¾îºÙÀÌ±â (description ¾È¿¡ \nÀÌ µé¾î°£ °æ¿ì)
+            // 1. ì¤„ ì´ì–´ë¶™ì´ê¸° (description ì•ˆì— \nì´ ë“¤ì–´ê°„ ê²½ìš°)
             // -----------------------------
             List<string> mergedLines = new List<string>();
             bool insideQuotes = false;
@@ -46,16 +49,16 @@ namespace Inference
             {
                 var line = rawLine.TrimEnd('\r');
 
-                // description ½ÃÀÛ Àü
+                // description ì‹œì‘ ì „
                 if (!insideQuotes)
                     currentLine = line;
                 else
-                    currentLine += "\n" + line; // description ÀÌ¾îºÙÀÌ±â
+                    currentLine += "\n" + line; // description ì´ì–´ë¶™ì´ê¸°
 
                 int quoteCount = line.Count(c => c == '"');
                 if (quoteCount % 2 != 0) insideQuotes = !insideQuotes;
 
-                // descriptionÀÌ ´İÈù ½ÃÁ¡¿¡¼­ ÃÖÁ¾ÀûÀ¸·Î ÇÑ ÁÙ·Î ÇÕÃÄÁü
+                // descriptionì´ ë‹«íŒ ì‹œì ì—ì„œ ìµœì¢…ì ìœ¼ë¡œ í•œ ì¤„ë¡œ í•©ì³ì§
                 if (!insideQuotes)
                 {
                     mergedLines.Add(currentLine);
@@ -64,7 +67,7 @@ namespace Inference
             }
 
             // -----------------------------
-            // 2. º´ÇÕµÈ ¶óÀÎ ±âÁØÀ¸·Î ÆÄ½Ì ½ÃÀÛ
+            // 2. ë³‘í•©ëœ ë¼ì¸ ê¸°ì¤€ìœ¼ë¡œ íŒŒì‹± ì‹œì‘
             // -----------------------------
             List<Clue> clues = new List<Clue>();
             int lineIndex = 0;
@@ -98,7 +101,7 @@ namespace Inference
                             clue.Tags = field.Split('/');
                             break;
                         case 4:
-                            // description ÇÊµå¿¡¼­ \n Á¦°Å ÈÄ / ·Î split
+                            // description í•„ë“œì—ì„œ \n ì œê±° í›„ / ë¡œ split
                             string[] descs = field.Split(new char[] { '/' }, System.StringSplitOptions.RemoveEmptyEntries);
 
                             ClueDescription[] clueDescs = new ClueDescription[descs.Length];
@@ -117,15 +120,21 @@ namespace Inference
 
             sample = clues.ToArray();
 
-            Debug.Log($"{sample.Length}°³ÀÇ ´Ü¼­ µ¥ÀÌÅÍ¸¦ ºÒ·¯¿Ô½À´Ï´Ù.");
+            Debug.Log($"{sample.Length}ê°œì˜ ë‹¨ì„œ ë°ì´í„°ë¥¼ ë¶ˆëŸ¬ì™”ìŠµë‹ˆë‹¤.");
         }
 
         public IClue GetClue(string id)
         {
-            for (int i = 0; i < clueCollection.Count; i++)
+            for(int i = 0; i <= clues.Length; i++)
             {
-                if (clueCollection.TryGetValue(id, out IClue clue))
-                    return clue;
+                if (clues[i].Id == id)
+                    return clues[i];
+            }
+
+            for(int i = 0; i <= recipes.Length; i ++)
+            {
+                if (recipes[i].Id == id)
+                    return recipes[i];
             }
 
             Debug.LogError($"{id} clue is not exist. Check the Clue Data");
@@ -133,7 +142,7 @@ namespace Inference
         }
 
 
-        [ContextMenu("JsonÀ¸·Î º¯È¯")]
+        [ContextMenu("Jsonìœ¼ë¡œ ë³€í™˜")]
         public void ToJsonFile()
         {
 
