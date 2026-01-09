@@ -273,7 +273,7 @@ MonoBehaviour:
   tryInterection: 0
   interectionLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 320
   focusCursor: {fileID: 0}
   interectionDistance: 10
   groundLayer:

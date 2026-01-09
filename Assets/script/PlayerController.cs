@@ -75,11 +75,11 @@ public partial class PlayerController : MonoBehaviour
 
         if (Physics.Raycast(ray, out interectionHit, 100f, interectionLayer))
         {
-            focusCursor.DisplayFocusCursor(true);
-
-            if (tryInterection)
+            if (interectionHit.transform.TryGetComponent(out IInterectable interectable))
             {
-                if (interectionHit.transform.TryGetComponent(out IInterectable interectable))
+                focusCursor.DisplayFocusCursor(true);
+
+                if (tryInterection)
                 {
                     switch (interectable.Interect())
                     {
@@ -94,10 +94,10 @@ public partial class PlayerController : MonoBehaviour
                     }
                 }
             }
-        }
-        else
-        {
-            focusCursor.DisplayFocusCursor(false);
+            else
+            {
+                focusCursor.DisplayFocusCursor(false);
+            }
         }
     }
 
