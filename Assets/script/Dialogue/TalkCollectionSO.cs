@@ -1,13 +1,13 @@
 ﻿using Assets.script.Talk_System;
 using CsvHelper;
 using CsvHelper.Configuration.Attributes;
-using NUnit.Framework.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using UnityEditor;
 
 [CreateAssetMenu(fileName = "대화 데이터", menuName = "대화 시스템/데이터 SO")]
 public class DialogueDataSO : ScriptableObject
@@ -90,6 +90,59 @@ public class DialogueDataSO : ScriptableObject
 
             return csv.GetRecords<T>().ToList();
         }
+    }
+}
+
+[CustomPropertyDrawer(typeof(DialogueLine))]
+public class DialogueLineDrawer : PropertyDrawer
+{
+    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+    {
+        // 내부 속성들을 가져옵니다.
+        SerializedProperty speakerData = property.FindPropertyRelative("speakerData");
+        SerializedProperty speakerName = speakerData.FindPropertyRelative("name");
+        SerializedProperty text = property.FindPropertyRelative("text");
+
+        // 표시할 문자열 생성 (예: "홍길동: 안녕하세요")
+        string nameValue = string.IsNullOrEmpty(speakerName.stringValue) ? "Unknown" : speakerName.stringValue;
+        string textValue = text.stringValue.Replace("\n", " "); // 줄바꿈은 한 칸 공백으로 치환
+
+        string customLabel = $"{nameValue}: {textValue}";
+
+        // 기본 PropertyDrawer 호출 시 레이블을 우리가 만든 커스텀 레이블로 교체
+        EditorGUI.PropertyField(position, property, new GUIContent(customLabel), true);
+    }
+
+    public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+    {
+        // 접혀있을 때와 펼쳐져 있을 때의 높이를 자동으로 계산
+        return EditorGUI.GetPropertyHeight(property, label, true);
+    }
+}
+
+//[CustomEditor(typeof(DialogueDataSO))]
+public class DialogueDataSOEditor: Editor
+{
+    public override void OnInspectorGUI()
+    {
+        var list = serializedObject.FindProperty("talkList");
+
+        ShowArrayProperty(list);
+    }
+
+    public void ShowArrayProperty(SerializedProperty list)
+    {
+        var talkLineList = list.FindPropertyRelative("talkLineList");
+
+        EditorGUILayout.PropertyField(list);
+
+        EditorGUI.indentLevel += 1;
+        for (int i = 0; i < list.arraySize; i++)
+        {
+            EditorGUILayout.PropertyField(list.GetArrayElementAtIndex(i),
+            new GUIContent("Bla" + (i + 1).ToString()));
+        }
+        EditorGUI.indentLevel -= 1;
     }
 }
 

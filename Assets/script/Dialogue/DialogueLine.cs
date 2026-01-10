@@ -1,8 +1,5 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.InputSystem;
-using CsvHelper;
 
 namespace Assets.script.Talk_System
 {
