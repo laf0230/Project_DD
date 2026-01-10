@@ -1,0 +1,149 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 025d5ac97181e0045bc26518ade3fe39, type: 3}
+  m_Name: "\uB2E8\uC11C \uB370\uC774\uD130"
+  m_EditorClassIdentifier: 
+  data: {fileID: 4900000, guid: 0b66875ccc56c0b49b6b3d01268cdf09, type: 3}
+  START_LINE: 2
+  clues:
+  - id: Sample
+    imagePath: 
+    name: Brick
+    tags:
+    - Tool
+    description:
+    - description: H
+      index: 0
+    - description: I
+      index: 1
+    - description: B
+      index: 2
+    linkedClueId:
+    - 
+    - 
+    - 
+  - id: Sample1
+    imagePath: 
+    name: Home
+    tags:
+    - Place
+    description:
+    - description: This
+      index: 0
+    - description: Place
+      index: 1
+    - description: Home
+      index: 2
+    linkedClueId:
+    - 
+    - 
+    - 
+  - id: Sample2
+    imagePath: 
+    name: Dog House
+    tags:
+    - Place
+    - Tool
+    description:
+    - description: Nothing
+      index: 0
+    - description: Nothing
+      index: 1
+    - description: Nothing
+      index: 2
+    linkedClueId:
+    - 
+    - 
+    - 
+  - id: Sample3
+    imagePath: 
+    name: Smart House Robot
+    tags:
+    - Place
+    - Tool
+    - Person
+    description:
+    - description: Hi
+      index: 0
+    - description: Im
+      index: 1
+    - description: House Robot
+      index: 2
+    linkedClueId:
+    - 
+    - 
+    - 
+  - id: Sample4
+    imagePath: 
+    name: Just Robot
+    tags:
+    - Tool
+    - Person
+    - Person
+    description:
+    - description: Hello.
+      index: 26
+    - description: Its
+      index: 1
+    - description: Just Robot
+      index: 2
+    linkedClueId:
+    - 
+    - 
+    - 
+  - id: Sample5
+    imagePath: 
+    name: Terminal
+    tags:
+    - Tool
+    - Person
+    description:
+    - description: Hello.
+      index: 26
+    - description: Its
+      index: 1
+    - description: Just Robot
+      index: 2
+    linkedClueId:
+    - 
+    - 
+    - 
+  sample:
+  - id: A
+    imagePath: Camera.png
+    name: "\uCE74\uBA54\uB77C"
+    tags:
+    - Object
+    - Tool
+    description:
+    - description: "\uD074\uB808\uB514\uAC00 \uB4E4\uACE0 \uB2E4\uB2CC\uB2E4.\n\uD074\uB808\uB514\uC758
+        \uC18C\uC911\uD55C \uBB3C\uAC74\uAC19\uB2E4."
+      index: 0
+    - description: "\uC0AC\uC9C4\uC744 \uCC0D\uC744 \uC218 \uC788\uB2E4."
+      index: 1
+    - description: "\uB0B4\uBD80\uAC00 \uBE44\uC5B4 \uC788\uB2E4."
+      index: 2
+    linkedClueId: []
+  recipes:
+  - id: Recipe1
+    name: REC
+    description:
+    - description: 
+      index: 0
+    tags:
+    - Sentence
+    clueIds:
+    - 
+    - 
+    - 
+    - 
+  isForBuild: 0

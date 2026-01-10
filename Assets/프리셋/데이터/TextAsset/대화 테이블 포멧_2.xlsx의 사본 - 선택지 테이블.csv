@@ -1,0 +1,7 @@
+,,,
+Selection,,,
+대화 ID,선택지 식별 ID,선택지 내용,이벤트 테이블 참조
+DialogueId,Id,Content,EventId
+10,100,선택지 A,
+10,101,선택지 B,
+10,102,선택지 C,

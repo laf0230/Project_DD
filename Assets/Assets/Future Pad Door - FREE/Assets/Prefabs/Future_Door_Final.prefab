@@ -204,7 +204,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6185937851195669113}
-  - component: {fileID: 4966471324885405355}
   - component: {fileID: 5853094662875114325}
   m_Layer: 0
   m_Name: Future_Door_Final
@@ -233,22 +232,6 @@ Transform:
   - {fileID: 6185937851195669105}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4966471324885405355
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6185937851196024409}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1477977eca7a9c43a8b51a1cd45d456, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  leftDoor: {fileID: 6185937851195669117}
-  rightDoor: {fileID: 6185937851195669107}
-  animator: {fileID: 5853094662875114325}
-  openTime: 4000
 --- !u!95 &5853094662875114325
 Animator:
   serializedVersion: 7

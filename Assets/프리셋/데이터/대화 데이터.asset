@@ -12,50 +12,76 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 468f4df7283e1d046b89e9ebbb1e37fe, type: 3}
   m_Name: "\uB300\uD654 \uB370\uC774\uD130"
   m_EditorClassIdentifier: 
+  startRowIndex: 3
+  dialogueTable: {fileID: 4900000, guid: 0718a9a2f50b66c47a949505506992c9, type: 3}
+  selectionTable: {fileID: 4900000, guid: 3be8288b117685d4294a4f96eca5813d, type: 3}
   talkList:
-  - ID: Sample
+  - id: 10
     talkLineList:
     - speakerData:
-        name: A
-        emotionName: Normal
-      otherDataList: []
-      talkID: 
-      talkText: Hi XD
+        name: "\uCE74\uC6B0\uB518"
+        id: 0
+      otherSpeakerData:
+        name: 
+        id: 0
+      id: ...
+      text: ...
     - speakerData:
-        name: B
-        emotionName: Normal
-      otherDataList: []
-      talkID: 
-      talkText: Hello :V
+        name: "\uCE74\uC6B0\uB518"
+        id: 0
+      otherSpeakerData:
+        name: 
+        id: 0
+      id: "\uD638\uB85C\uBAAC\uC5D0 \uB530\uB978 \uB1CC\uD30C\uC758 \uBCC0\uD654
+        \uBC18\uC751 \uC5F0\uAD6C'"
+      text: "\uD638\uB85C\uBAAC\uC5D0 \uB530\uB978 \uB1CC\uD30C\uC758 \uBCC0\uD654
+        \uBC18\uC751 \uC5F0\uAD6C'"
+    - speakerData:
+        name: "\uCE74\uC6B0\uB518"
+        id: 0
+      otherSpeakerData:
+        name: 
+        id: 0
+      id: "\uCE90\uC2A4, \uC774\uAC74 \uC774\uB984\uB9CC \uBD10\uB3C4 \uC218\uC0C1\uD574\uBCF4\uC774\uB294
+        \uC784\uC0C1\uC2E4\uD5D8\uC778\uB370?"
+      text: "\uCE90\uC2A4, \uC774\uAC74 \uC774\uB984\uB9CC \uBD10\uB3C4 \uC218\uC0C1\uD574\uBCF4\uC774\uB294
+        \uC784\uC0C1\uC2E4\uD5D8\uC778\uB370?"
+    - speakerData:
+        name: "\uCE90\uC2A4"
+        id: 0
+      otherSpeakerData:
+        name: 
+        id: 0
+      id: "\uC7AC\uBC0C\uC5B4 \uBCF4\uC774\uC9C0 \uC54A\uC544?"
+      text: "\uC7AC\uBC0C\uC5B4 \uBCF4\uC774\uC9C0 \uC54A\uC544?"
+    - speakerData:
+        name: "\uCE90\uC2A4"
+        id: 0
+      otherSpeakerData:
+        name: 
+        id: 0
+      id: "TV\uC5D0\uC11C\uB9CC \uBCF4\uB358 \uB1CC\uD30C\uBD84\uC11D\uC7A5\uCE58\uB97C
+        \uC9C1\uC811 \uCC29\uC6A9\uD574\uBCFC\uAC70\uAC19\uC544"
+      text: "TV\uC5D0\uC11C\uB9CC \uBCF4\uB358 \uB1CC\uD30C\uBD84\uC11D\uC7A5\uCE58\uB97C
+        \uC9C1\uC811 \uCC29\uC6A9\uD574\uBCFC\uAC70\uAC19\uC544"
+    - speakerData:
+        name: "\uCE90\uC2A4"
+        id: 0
+      otherSpeakerData:
+        name: 
+        id: 0
+      id: "\uADF8\uB9AC\uACE0 \uC218\uB2F9\uB3C4 \uB450\uB451\uD788 \uC900\uB2E4\uACE0"
+      text: "\uADF8\uB9AC\uACE0 \uC218\uB2F9\uB3C4 \uB450\uB451\uD788 \uC900\uB2E4\uACE0"
     talkSelectionList:
-    - selectionText: Babo
-      action:
-        m_PersistentCalls:
-          m_Calls: []
-    - selectionText: jongmin
-      action:
-        m_PersistentCalls:
-          m_Calls: []
-  - ID: 2ndTalk
-    talkLineList:
-    - speakerData:
-        name: A
-        emotionName: Normal
-      otherDataList: []
-      talkID: 
-      talkText: It's 2nd Talk
-    - speakerData:
-        name: B
-        emotionName: Normal
-      otherDataList: []
-      talkID: 
-      talkText: Hello :V
-    talkSelectionList:
-    - selectionText: Babo
-      action:
-        m_PersistentCalls:
-          m_Calls: []
-    - selectionText: jongmin
-      action:
-        m_PersistentCalls:
-          m_Calls: []
+    - text: "\uC120\uD0DD\uC9C0 A"
+      eventName:
+      - 0
+      selectionType: 0
+    - text: "\uC120\uD0DD\uC9C0 B"
+      eventName:
+      - 0
+      selectionType: 0
+    - text: "\uC120\uD0DD\uC9C0 C"
+      eventName:
+      - 0
+      selectionType: 0
